@@ -20,7 +20,7 @@ def set_window_geometry(name: str, show: bool = True,
 
 
 def get_all_windows():
-    """ Gets a list of all windows in the order they were created. """
+    """ Gets a list of hwnds all windows in the order they were created. """
 
     def enum_windows_proc(hwnd, hwnd_list):
         if win32gui.IsWindowVisible(hwnd) and win32gui.GetWindowText(hwnd):

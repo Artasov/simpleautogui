@@ -1,6 +1,6 @@
 [project]
 name = "simpleautogui"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name = "artasov", email = "ivanhvalevskey@gmail.com" }
 ]
@@ -14,11 +14,12 @@ classifiers = [
 ]
 dependencies = [
   "PyAutoGUI >= 0.9.54",
+  "opencv-python >= 4.9.0.80",
   "pywin32 >= 306"
 ]
 
 [project.urls]
-Homepage = "https://github.com/pypa/sampleproject"
+Homepage = "https://github.com/Artasov/sampleproject"
 Issues = "https://github.com/Artasov/simpleautogui/issues"
 
 [tool.poetry.scripts]

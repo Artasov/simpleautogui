@@ -1,93 +1,124 @@
-from typing import List
+from time import sleep, time
+from typing import List, Union, Tuple
 
-import pyautogui as pg
-from pyautogui import Point
-from pyrect import Box
+import pyrect
+from pyautogui import (
+    Point,
+    locateOnScreen,
+    size,
+    confirm,
+    locateAllOnScreen, ImageNotFoundException
+)
 
-
-def wait_while_img_not_found(pathes, check_count=100, accur=0.8, err_skipping=False,
-                             region=(0, 0, pg.size().width, pg.size().height), sleep_sec=0, center=True):
-    from time import sleep
-    check_now = 0
-    if isinstance(pathes, str):
-        pathes = [pathes]
-    while check_now < check_count:
-        if check_now + 1 < check_count:
-            sleep(sleep_sec)
-        else:
-            if not err_skipping:
-                if not search_notify_error(f'{pathes[0]}'):
-                    return False
-                check_now = 0
-        for onePath in pathes:
-            if center:
-                point = pg.locateCenterOnScreen(onePath, confidence=accur, region=region)
-            else:
-                point = pg.locateOnScreen(onePath, confidence=accur, region=region)
-            if point is not None:
-                return point
-        check_now += 1
-    return False
+from simpleautogui.screen.classes.common import Box
 
 
-def click_to_image(pathes, check_count=100, accur=0.8, err_skipping=False, oX=0, oY=0,
-                   region=(0, 0, pg.size().width, pg.size().height), sleep_sec=0, center=True):
-    position: Point = wait_while_img_not_found(pathes, check_count, accur, err_skipping,
-                                               region, sleep_sec, center)
-    if position:
-        pg.click(position.x + oX, position.y + oY)
+def wait_for_image(
+        paths: str | list[str],
+        timeout: int = 10000,
+        accuracy: float = 0.8,
+        error_dialog: bool = False,
+        region: tuple[int, int, int, int] = (0, 0, size().width, size().height),
+        check_interval: int = 100
+) -> Box | None:
+    """
+    Waits for a specified image or images to appear on the screen within a timeout.
+
+    :param paths: Path or list of paths to the image(s) to be searched.
+    :param timeout: Time in milliseconds to wait for the image(s).
+    :param accuracy: The accuracy with which to match the image(s).
+    :param error_dialog: If True, shows an error dialog if the image is not found.
+    :param region: The region of the screen to search in.
+    :param check_interval: Interval in milliseconds between checks.
+    :return: Point if image is found, None otherwise.
+    """
+    if isinstance(paths, str):
+        paths = [paths]
+
+    end_time = time() + (timeout / 1000)
+    while time() < end_time:
+        for path in paths:
+            try:
+                box = locateOnScreen(path, confidence=accuracy, region=region)
+                if box is not None:
+                    return Box(box.left, box.top, box.width, box.height)
+            except ImageNotFoundException:
+                pass
+        sleep(check_interval / 1000)
+
+        if time() >= end_time and not error_dialog:
+            if not notify_error(f'{paths[0]}'):
+                return None
+
+    return None
 
 
-def wait_while_img_not_found_all(pathes, check_count=100, accur=0.8, err_skipping=False,
-                                 region=(0, 0, pg.size().width, pg.size().height), sleep_sec=0,
-                                 pixel_accur_near_points=10, return_centers_points=True):
-    from time import sleep
-    if isinstance(pathes, str):
-        pathes = [pathes]
-    check_now = 0
-    while check_now < check_count:
-        if check_now + 1 < check_count:
-            sleep(sleep_sec)
-        else:
-            if not err_skipping:
-                if not search_notify_error(f'{pathes}'):
-                    return False
-                check_now = 0
-        for path in pathes:
-            result = pg.locateAllOnScreen(path, confidence=accur, region=region)
-            boxes = list(result)
-            if len(boxes) > 0:
-                if return_centers_points:
-                    return get_center_points_in_boxes(
-                        remove_near_boxes(boxes, pixel_accur_near_points=pixel_accur_near_points)
-                    )
-                else:
-                    return remove_near_boxes(boxes, pixel_accur_near_points=pixel_accur_near_points)
-        check_now += 1
-    return False
+def wait_for_images(
+        paths: str | List[str],
+        timeout: int = 10000,
+        accuracy: float = 0.8,
+        error_dialog: bool = False,
+        region: Tuple[int, int, int, int] = (0, 0, size().width, size().height),
+        check_interval: int = 100,
+        proximity_threshold_px: int = 4,
+) -> list[Point] | list[Box] | None:
+    """
+    Waits for multiple images to appear on the screen within a specified timeout.
+
+    :param paths: Path or list of paths to the images to be searched.
+    :param timeout: Time in milliseconds to wait for the images.
+    :param accuracy: The accuracy with which to match the images.
+    :param error_dialog: If True, shows an error dialog if the images are not found.
+    :param region: The region of the screen to search in.
+    :param check_interval: Interval in milliseconds between checks.
+    :param proximity_threshold_px: Pixel distance to consider images as distinct.
+    :return: List of Points or Boxes if images are found, False otherwise.
+    """
+    if isinstance(paths, str):
+        paths = [paths]
+
+    end_time = time() + (timeout / 1000)
+    while time() < end_time:
+        for path in paths:
+            try:
+                boxes = locateAllOnScreen(path, confidence=accuracy, region=region)
+                boxes = [Box(b.left, b.top, b.width, b.height) for b in boxes]
+                if boxes:
+                    boxes = remove_proximity_boxes(boxes, proximity_threshold_px)
+                    return boxes
+            except ImageNotFoundException:
+                pass
+
+        sleep(check_interval / 1000)
+        if time() >= end_time and not error_dialog:
+            if not notify_error(f'{paths[0]}'):
+                return None
+
+    return None
 
 
-def remove_near_boxes(boxes: List[Box], pixel_accur_near_points: int = 10) -> List[Box]:
+def remove_proximity_boxes(boxes: list[Box], proximity_threshold_px: int = 10) -> list[Box]:
+    """
+    Filters out boxes that are within a certain proximity threshold.
+
+    :param boxes: List of Box objects to filter.
+    :param proximity_threshold_px: Pixel threshold for determining proximity.
+    :return: List of filtered Box objects.
+    """
     result = []
     for box in boxes:
-        box: Box
-        if not any(abs(box.left - b.left) <= pixel_accur_near_points and abs(box.top - b.top) <= pixel_accur_near_points
+        if not any(abs(box.x - b.x) <= proximity_threshold_px and abs(box.y - b.y) <= proximity_threshold_px
                    for b in result):
             result.append(box)
     return result
 
 
-def get_center_points_in_boxes(boxes: List[Box]) -> List[Point]:
-    center_points = []
-    for box in boxes:
-        center_points.append(Point(x=box.left + int(box.width / 2), y=box.top + int(box.height / 2)))
-    return center_points
+def notify_error(msg: str) -> bool:
+    """
+    Displays an error dialog and asks the user whether to continue after this error.
 
-
-def search_notify_error(error_msg):
-    msg = f'SEARCH ERROR {error_msg}'
-    result = pg.confirm(msg, 'CONFIRMATION', ('Continue search', 'Stop'))
-    if result == 'Continue search':
-        return True
-    else:
-        return False
+    :param msg: The error message to display.
+    :return: True if the user chooses to continue the search, False otherwise.
+    """
+    result = confirm(msg, 'Confirmation', ('Continue ', 'Stop'))
+    return result == 'Continue'
