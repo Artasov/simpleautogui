@@ -2,27 +2,27 @@
 name = "simpleautogui"
 version = "0.0.1"
 authors = [
-  { name="artasov", email="ivanhvalevskey@gmail.com" },
+  { name = "artasov", email = "ivanhvalevskey@gmail.com" }
 ]
 description = "A wrapper around pyautogui that will make some automation processes easier."
 readme = "README.md"
 requires-python = ">=3.11"
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
 ]
-
-[project.dependencies]
-PyAutoGUI = "^0.9.54"
-pywin32 = "^306"
+dependencies = [
+  "PyAutoGUI >= 0.9.54",
+  "pywin32 >= 306"
+]
 
 [project.urls]
 Homepage = "https://github.com/pypa/sampleproject"
 Issues = "https://github.com/Artasov/simpleautogui/issues"
 
 [tool.poetry.scripts]
-simple-auto-gui = 'simpleautogui:main'
+simple-auto-gui = "simpleautogui:main"
 
 [build-system]
 requires = ["setuptools", "wheel"]
