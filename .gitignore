@@ -115,4 +115,8 @@ data
 ./tests
 ./tests/
 ./tests/**
+./tests/**/
+./tests/**/**/
+./tests/**/**/**/
+./tests/**/**/**/**/
 
