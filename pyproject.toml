@@ -1,6 +1,6 @@
 [project]
 name = "simpleautogui"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
   { name = "artasov", email = "ivanhvalevskey@gmail.com" }
 ]
@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Artasov/sampleproject"
+Homepage = "https://github.com/Artasov/simpleautogui"
 Issues = "https://github.com/Artasov/simpleautogui/issues"
 
 [tool.poetry.scripts]
