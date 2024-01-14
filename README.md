@@ -22,7 +22,7 @@ pip install simpleautogui
     
     
     def foo_find():
-        result = ascreen.wait_for_image(paths="path/to/your/image.png")
+        result = ascreen.waitImage(paths="image.png")
         if result:
             result.click()
         else:
