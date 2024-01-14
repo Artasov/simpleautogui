@@ -18,11 +18,11 @@ pip install simpleautogui
 ## Fast Examples
 * ### Wait for image and click center on it
     ```python
-    from simpleautogui import screen as ascreen
+    from simpleautogui import screen 
     
     
     def foo_find():
-        result = ascreen.waitImage(paths="image.png")
+        result = screen.waitImage(paths="image.png")
         if result:
             result.click()
         else:
@@ -33,11 +33,11 @@ pip install simpleautogui
 
     ```python
     # Same thing but more details
-    from simpleautogui import screen as ascreen
+    from simpleautogui import screen
     
     
     def foo_find():
-        result = ascreen.wait_for_image(
+        result = screen.wait_for_image(
             paths="path/to/your/image.png",
             timeout=10000,
             accuracy=0.9,
