@@ -76,5 +76,11 @@ pip install simpleautogui
     from simpleautogui import win as awin
     print(awin.get_clipboard_text())
     ```
+
+* ### Region text recognition
+    Для использования `Region().text()` нужен `Tesseract`<br>
+    https://github.com/UB-Mannheim/tesseract/wiki <br>
+    Не забудьте выбрать при установке нужные языки.
+
 ## License
 **simpleautogui** is licensed under [MIT License](LICENSE).
