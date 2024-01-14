@@ -1,4 +1,4 @@
-# simpleautogui `by artasov`
+# simpleautogui
 **simpleautogui** is a Python library designed to 
 simplify the process of GUI automation. It builds 
 upon the functionalities of pyautogui and provides 
