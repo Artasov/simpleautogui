@@ -9,6 +9,17 @@ and dragging elements. Also managing windows,
 arranging in a grid, etc. Send your pull requests, 
 write issues.
 
+- **[Quick Start](#Quick-Start)**
+  - [Modules](#Modules)
+  - [Classes](#Classes)
+  - [Methods](#Methods)
+- **[Examples](#Examples)**
+  - [Статические маршруты](#статические-маршруты)
+  - [Динамические маршруты](#динамические-маршруты)
+  - [Именование маршрутов и перенаправления](#url-naming--redirects-именование-маршрутов-и-перенаправление)
+- **[FAQ](#FAQ)**
+
+
 ## Installation
 Install simpleautogui using pip:
 ```shell
@@ -21,13 +32,7 @@ pip install simpleautogui
     from simpleautogui import screen 
     
     
-    def foo_find():
-        result = screen.waitImage(paths="image.png")
-        if result:
-            result.click()
-        else:
-            print("Image not found within the specified timeout.")
-    
+    screen.waitImage(paths="image.png").click()
     ```
     #### Same thing but more details
 
@@ -37,7 +42,7 @@ pip install simpleautogui
     
     
     def foo_find():
-        result = screen.wait_for_image(
+        result = screen.waitImage(
             paths="path/to/your/image.png",
             timeout=10000,
             accuracy=0.9,

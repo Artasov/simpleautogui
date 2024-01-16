@@ -8,7 +8,6 @@
 
 import os
 import sys
-
 from sphinx.application import Sphinx
 
 sys.path.insert(0, os.path.abspath('../..'))
@@ -17,13 +16,13 @@ project = 'simpleautogui'
 copyright = '2024, artasov'
 author = 'artasov'
 release = '0.0.4'
+templates_path = ['./_templates']
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = ['sphinx.ext.todo', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc']
 
-templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # -- Options for HTML output -------------------------------------------------
@@ -32,5 +31,11 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = 'furo'
 html_static_path = ['_static']
 
+html_css_files = [
+    'css/custom.css',
+]
 
+html_js_files = [
+    'js/custom.js',
+]
 

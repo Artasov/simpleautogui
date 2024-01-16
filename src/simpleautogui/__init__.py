@@ -1,2 +1,4 @@
 import simpleautogui.screen
-import simpleautogui.windows
+import simpleautogui.win
+import simpleautogui.base
+from simpleautogui.base.classes.base import *

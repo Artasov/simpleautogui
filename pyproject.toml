@@ -16,7 +16,9 @@ dependencies = [
     "PyAutoGUI >= 0.9.54",
     "opencv-python >= 4.9.0.80",
     "pywin32 >= 306",
-    "pytesseract >= 0.3.10"
+    "pytesseract >= 0.3.10",
+    "mouse >= 0.7.1",
+    "keyboard >= 0.13.5",
 ]
 
 [project.urls]

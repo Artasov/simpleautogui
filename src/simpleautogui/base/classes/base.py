@@ -1,11 +1,18 @@
+import math
+from time import time, sleep
+from typing import Union
+
+import keyboard
 import pyautogui as pg
 import pytesseract
 from PIL import ImageEnhance, ImageFilter
 from PIL import Image
+import mouse
 
 
 class Point:
-    def __init__(self, x: int, y: int):
+    def __init__(self, x: int = 0, y: int = 0):
+        self.clicked_position = None
         self.x = x
         self.y = y
 
@@ -32,29 +39,94 @@ class Point:
 
         pg.moveTo(self.x + oX, self.y + oY, **move_kwargs)
 
-    def dragDropTo(self, endX, endY, oX: int = 0, oY: int = 0, **drag_kwargs) -> None:
+    def dragDropTo(self, endX: int, endY: int, oX: int = 0, oY: int = 0, **drag_kwargs) -> None:
         """
         Drags from the current Point with offset and drops to a target x,y.
-
-        :param endX: Finish x-coordinate
-        :param endY: Finish y-coordinate
-        :param oX: The offset added to the start x-coordinate.
-        :param oY: The offset added to the start y-coordinate.
-        :param drag_kwargs: Additional keyword arguments for pyautogui.dragTo().
         """
-        pg.dragTo(self.x + oX, self.y + oY, endX, endY, **drag_kwargs)
+        # Move to the starting point with offset
+        pg.moveTo(self.x + oX, self.y + oY)
+
+        # Drag to the end point
+        pg.dragTo(endX, endY, **drag_kwargs)
 
     def dragDropRel(self, relX: int, relY: int, oX: int = 0, oY: int = 0, **drag_kwargs) -> None:
         """
         Drags from the current Point with offset to a relative position.
-
-        :param relX: The relative x-coordinate to drag to.
-        :param relY: The relative y-coordinate to drag to.
-        :param oX: The offset added to the start x-coordinate.
-        :param oY: The offset added to the start y-coordinate.
-        :param drag_kwargs: Additional keyword arguments for pyautogui.dragRel().
         """
-        pg.dragRel(self.x + oX, self.y + oY, relX, relY, **drag_kwargs)
+        # Move to the starting point with offset
+        pg.moveTo(self.x + oX, self.y + oY)
+
+        # Drag to the relative position
+        pg.dragRel(relX, relY, **drag_kwargs)
+
+    @staticmethod
+    def input(button='right', timeout=10) -> Union['Point', None]:
+        """
+        Waits for a mouse click or keyboard button press and returns the cursor position.
+
+        :param button: The mouse button or keyboard key to listen for. Default is 'left'.
+        :param timeout: Time in seconds after which the method returns None if no input is detected.
+        :return: Point object representing the cursor position or None if timeout is reached.
+        """
+        start_time = time()
+
+        while True:
+            if timeout and time() - start_time > timeout:
+                raise TimeoutError(f'input button={button} timeout.')
+
+            if button in ['left', 'right', 'middle'] and mouse.is_pressed(button):
+                position = pg.position()
+                return Point(position.x, position.y)
+
+            if keyboard.is_pressed(button):
+                position = pg.position()
+                return Point(position.x, position.y)
+
+            sleep(0.01)
+
+    @staticmethod
+    def get_distance(with_sign: bool = True, sleep_after_first: float | int = 0.2) -> float:
+        """
+        Waits for two mouse clicks and returns the distance between the points.
+
+        :param sleep_after_first: Sleep seconds after first click.
+        :param with_sign: If True, returns the distance considering the sign. If False, returns the absolute distance.
+        :return: Distance between the two points.
+        """
+        point1 = Point().input()
+        sleep(sleep_after_first)
+        point2 = Point().input()
+
+        dx = point2.x - point1.x
+        dy = point2.y - point1.y
+
+        if with_sign:
+            return math.sqrt(dx ** 2 + dy ** 2)
+        else:
+            return math.sqrt(abs(dx) ** 2 + abs(dy) ** 2)
+
+    @staticmethod
+    def get_deviation(with_sign: bool = True, sleep_after_first: float | int = 0.2) -> tuple[int, int]:
+        """
+        Waits for TWO mouse clicks and returns the deviation in X and Y coordinates.
+
+        :param sleep_after_first: Sleep seconds after first click.
+        :param with_sign: If True, returns the deviation with sign. If False, returns the absolute deviation.
+        :return: A tuple (deviation_x, deviation_y) representing the deviation between the two points.
+        """
+        point1 = Point().input()
+        sleep(sleep_after_first)
+        point2 = Point().input()
+        if not all((point1, point2)):
+            raise
+
+        deviation_x = point2.x - point1.x
+        deviation_y = point2.y - point1.y
+
+        if with_sign:
+            return deviation_x, deviation_y
+        else:
+            return abs(deviation_x), abs(deviation_y)
 
 
 class Region:
@@ -67,7 +139,11 @@ class Region:
     :param height: The height of the region.
     """
 
-    def __init__(self, x: int, y: int, width: int, height: int):
+    def __init__(self,
+                 x: int = 0,
+                 y: int = 0,
+                 width: int = pg.size().width,
+                 height: int = pg.size().height):
         self.x = x
         self.y = y
         self.width = width
@@ -89,9 +165,9 @@ class Region:
         image = pg.screenshot(region=(self.x, self.y, self.width, self.height))
         image.show()
 
-    def findText(self, text: str, lang: str = 'eng+rus', contrast: int = 0,
+    def findText(self, text: str, lang: str = 'eng+rus', contrast: int | float = 0,
                  resize: int = 0, sharpen: bool = True, case_sensitive: bool = False,
-                 **image_to_string_kwargs):
+                 **image_to_string_kwargs) -> list['Region']:
         """
         Searches for the specified text within the region and returns regions containing the text.
 
@@ -107,7 +183,7 @@ class Region:
         image = pg.screenshot(region=(self.x, self.y, self.width, self.height))
 
         if resize:
-            image = image.resize([resize * s for s in image.size], Image.LANCZOS)
+            image = image.resize([int(resize * s) for s in image.size], Image.LANCZOS)
         if contrast:
             enhancer = ImageEnhance.Contrast(image)
             image = enhancer.enhance(contrast)
@@ -125,19 +201,23 @@ class Region:
             char = b[0]
             char = char if case_sensitive else char.lower()
 
+            # Adjusted the coordinates to account for the region's position
+            x1, y1, x2, y2 = map(int, b[1:5])
+            y1 = image.height - y1
+            y2 = image.height - y2
+
             if text.startswith(current_text + char):
                 if not current_text:  # first character of the match
-                    current_region = [int(b[1]), int(b[2]), int(b[3]), int(b[4])]
+                    current_region = [x1, y2, x2, y1]
                 else:  # expand the region to include current char
-                    current_region[2] = int(b[3])
-                    current_region[3] = int(b[4])
+                    current_region[2] = x2
+                    current_region[3] = y1
 
                 current_text += char
 
                 if current_text == text:  # full match
                     x, y, w, h = current_region
-                    print(f'{current_region=}')
-                    regions.append(Region(self.x + x, self.y + y, w, h))
+                    regions.append(Region(self.x + x, self.y + y, w - x, h - y))
                     current_text = ""  # reset for next possible match
             else:
                 current_text = ""  # reset current text as it's not a match
@@ -145,7 +225,7 @@ class Region:
         return regions
 
     def text(self, lang: str = 'eng+rus', contrast: int = 0, resize: int = 0,
-             sharpen: bool = True, **image_to_string_kwargs) -> str:
+             sharpen: bool = True, **image_to_string_kwargs: object) -> str:
         """
         Recognizes and returns the text in the specified area of the screen.
 
@@ -194,20 +274,21 @@ class Region:
         move_y = self.cy + oY if center else self.y + oY
         pg.moveTo(move_x, move_y, **move_kwargs)
 
-    def dragDropTo(self, endX, endY, center: bool = True, oX: int = 0, oY: int = 0, **drag_kwargs) -> None:
+    def dragDropTo(self, endX: int, endY: int, center: bool = True, oX: int = 0, oY: int = 0, **drag_kwargs) -> None:
         """
-        Drags from the current box and drops to a target box.
+        Drags from the current box and drops to a target x, y.
 
-        :param endX: Finish x-coordinate
-        :param endY: Finish y-coordinate
-        :param center: If True, starts from the center of the current box.
+        :param endX: Finish x-coordinate.
+        :param endY: Finish y-coordinate.
+        :param center: If True, starts from the center of the current box; otherwise starts from the top-left corner.
         :param oX: The offset added to the start x-coordinate.
         :param oY: The offset added to the start y-coordinate.
         :param drag_kwargs: Additional keyword arguments for pyautogui.dragTo().
         """
         start_x = self.cx + oX if center else self.x + oX
         start_y = self.cy + oY if center else self.y + oY
-        pg.dragTo(start_x, start_y, endX, endY, **drag_kwargs)
+        pg.moveTo(start_x, start_y)
+        pg.dragTo(endX, endY, **drag_kwargs)
 
     def dragDropRel(self, relX: int, relY: int, center: bool = True, oX: int = 0, oY: int = 0, **drag_kwargs) -> None:
         """
@@ -215,11 +296,12 @@ class Region:
 
         :param relX: The relative x-coordinate to drag to.
         :param relY: The relative y-coordinate to drag to.
-        :param center: If True, starts from the center of the box.
+        :param center: If True, starts from the center of the box; otherwise starts from the top-left corner.
         :param oX: The offset added to the start x-coordinate.
         :param oY: The offset added to the start y-coordinate.
         :param drag_kwargs: Additional keyword arguments for pyautogui.dragRel().
         """
         start_x = self.cx + oX if center else self.x + oX
         start_y = self.cy + oY if center else self.y + oY
-        pg.dragRel(start_x, start_y, relX, relY, **drag_kwargs)
+        pg.moveTo(start_x, start_y)
+        pg.dragRel(relX, relY, **drag_kwargs)
