@@ -8,7 +8,7 @@ human interaction with the computer in a straightforward and
 efficient manner.
 
 ## Modules and Functionality
-
+ 
 The library is organized into several modules, each providing
 distinct functionalities:
 
