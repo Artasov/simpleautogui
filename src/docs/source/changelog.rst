@@ -1,7 +1,0 @@
-Changelog
----------
-
-Version 0.0.4
-~~~~~~~~~~~~~
-
-- Added new functions for window management.

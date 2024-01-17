@@ -1,7 +1,0 @@
-simpleautogui.base.classes.base module
-======================================
-
-.. automodule:: simpleautogui.base.classes.base
-   :members:
-   :undoc-members:
-   :show-inheritance:

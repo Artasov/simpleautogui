@@ -1,4 +1,0 @@
-FROM src/
-
-sphinx-apidoc.exe -o .\docs\source\ .\simpleautogui\
-.\docs\make.bat html
