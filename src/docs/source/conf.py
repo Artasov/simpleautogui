@@ -8,7 +8,8 @@
 
 import os
 import sys
-from sphinx.application import Sphinx
+import recommonmark
+from recommonmark.transform import AutoStructify
 
 sys.path.insert(0, os.path.abspath('../..'))
 
@@ -21,8 +22,12 @@ templates_path = ['./_templates']
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.todo', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc']
-
+extensions = [
+    'myst_parser',
+    'sphinx.ext.todo',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.autodoc'
+]
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # -- Options for HTML output -------------------------------------------------
@@ -38,4 +43,3 @@ html_css_files = [
 html_js_files = [
     'js/custom.js',
 ]
-

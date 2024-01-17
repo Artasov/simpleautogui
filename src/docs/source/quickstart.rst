@@ -183,6 +183,7 @@ Screen
   Waits for a specified color or colors to appear on the screen within a timeout.
 
   .. code-block:: python
+
       from pyautogui import size
       from simpleautogui import Point
       from simpleautogui.screen import waitColor, waitColors

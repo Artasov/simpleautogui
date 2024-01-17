@@ -6,13 +6,7 @@
 Welcome to simpleautogui's documentation!
 =========================================
 
-Introduction
-------------
-
-SimpleAutoGUI is a Python library for automating the GUI interactions. It provides easy-to-use functions for controlling the mouse and keyboard, making it a handy tool for scripting and automation tasks.
-
-The full reference of all functions, classes, and modules available in SimpleAutoGUI.
-
+.. include:: README.rst
 
 Content
 -----------------
