@@ -1,0 +1,7 @@
+simpleautogui.screen.utils.proximity module
+===========================================
+
+.. automodule:: simpleautogui.screen.utils.proximity
+   :members:
+   :undoc-members:
+   :show-inheritance:

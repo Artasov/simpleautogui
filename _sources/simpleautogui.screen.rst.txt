@@ -1,0 +1,18 @@
+simpleautogui.screen package
+============================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   simpleautogui.screen.utils
+
+Module contents
+---------------
+
+.. automodule:: simpleautogui.screen
+   :members:
+   :undoc-members:
+   :show-inheritance:
