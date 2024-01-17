@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="14ffe965-d29a-48b4-824a-a4321ccd1135" name="Changes" comment=" fix ..">
+      <change afterPath="$PROJECT_DIR$/.buildinfo" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_modules/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_modules/simpleautogui/base/classes/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_modules/simpleautogui/base/classes/notify.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_modules/simpleautogui/screen/utils/colors.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_modules/simpleautogui/screen/utils/images.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_modules/simpleautogui/screen/utils/proximity.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_modules/simpleautogui/win/windows.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/README.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/changelog.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/contact.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/examples.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/faq.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/index.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/modules.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/quickstart.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.base.classes.base.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.base.classes.notify.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.base.classes.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.base.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.screen.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.screen.utils.colors.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.screen.utils.images.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.screen.utils.proximity.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.screen.utils.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.win.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.win.windows.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/basic.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/css/custom.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/css/custom.sass" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/debug.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/doctools.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/documentation_options.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/file.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/js/custom.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/language_data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/minus.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/plus.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/pygments.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/scripts/furo-extensions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/scripts/furo.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/scripts/furo.js.LICENSE.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/scripts/furo.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/searchtools.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/skeleton.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/sphinx_highlight.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/styles/furo-extensions.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/styles/furo-extensions.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/styles/furo.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_static/styles/furo.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/changelog.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/contact.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/faq.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/genindex.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/objects.inv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/py-modindex.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/quickstart.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/search.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/searchindex.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simpleautogui.base.classes.base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simpleautogui.base.classes.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simpleautogui.base.classes.notify.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simpleautogui.base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simpleautogui.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simpleautogui.screen.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simpleautogui.screen.utils.colors.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simpleautogui.screen.utils.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simpleautogui.screen.utils.images.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simpleautogui.screen.utils.proximity.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simpleautogui.win.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simpleautogui.win.windows.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/README.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/changelog.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/contact.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/environment.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/examples.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/faq.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/index.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/modules.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/quickstart.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.base.classes.base.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.base.classes.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.base.classes.notify.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.base.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.screen.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.screen.utils.colors.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.screen.utils.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.screen.utils.images.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.screen.utils.proximity.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.win.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.win.windows.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/.buildinfo" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/README.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/simpleautogui/base/classes/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/simpleautogui/base/classes/notify.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/simpleautogui/screen/utils/colors.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/simpleautogui/screen/utils/images.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/simpleautogui/screen/utils/proximity.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/simpleautogui/win/windows.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/README.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/changelog.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/contact.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/examples.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/faq.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/index.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/modules.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/quickstart.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.base.classes.base.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.base.classes.notify.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.base.classes.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.base.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.screen.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.screen.utils.colors.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.screen.utils.images.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.screen.utils.proximity.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.screen.utils.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.win.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.win.windows.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/basic.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/css/custom.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/css/custom.sass" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/debug.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/doctools.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/documentation_options.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/file.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/js/custom.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/language_data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/minus.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/plus.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/pygments.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/scripts/furo-extensions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/scripts/furo.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/scripts/furo.js.LICENSE.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/scripts/furo.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/searchtools.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/skeleton.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/sphinx_highlight.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/styles/furo-extensions.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/styles/furo-extensions.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/styles/furo.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/styles/furo.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/changelog.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/contact.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/examples.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/faq.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/genindex.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/modules.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/objects.inv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/py-modindex.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/quickstart.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/search.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/searchindex.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.base.classes.base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.base.classes.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.base.classes.notify.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.screen.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.screen.utils.colors.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.screen.utils.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.screen.utils.images.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.screen.utils.proximity.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.win.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.win.windows.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/point.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/region.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/wait_color.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/wait_image.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/req.txt" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Sass File" />
+        <option value="JavaScript File" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="ab2c5210-a998-421a-a92e-d9a56fe74560" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2asUZXMlSJ1hB5yTJCrG1o4oymn" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "git-widget-placeholder": "gh-pages",
+    "last_opened_file_path": "E:/nonExistence/Code/simpleautogui",
+    "list.type.of.created.stylesheet": "Sass",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\nonExistence\Code\simpleautogui\src\docs\source\_templates" />
+      <recent name="E:\nonExistence\Code\simpleautogui\src\docs\source\_templates\apidoc" />
+      <recent name="E:\nonExistence\Code\simpleautogui\src\simpleautogui\base\classes" />
+      <recent name="E:\nonExistence\Code\simpleautogui\src\simpleautogui\base" />
+      <recent name="E:\nonExistence\Code\simpleautogui\tests\resources\images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\nonExistence\Code\simpleautogui" />
+      <recent name="E:\nonExistence\Code\simpleautogui\src\docs\source" />
+      <recent name="E:\nonExistence\Code\simpleautogui\examples" />
+      <recent name="E:\nonExistence\Code\simpleautogui\examples\images" />
+      <recent name="E:\nonExistence\Code\simpleautogui\src\docs\source\_templates\apidoc" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.region">
+    <configuration name="base" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="simpleautogui" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/simpleautogui/screen/classes" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="E:\nonExistence\Code\simpleautogui\src\simpleautogui\base\classes\base.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="common_tests (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="simpleautogui" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/screen_tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/screen_tests/common_tests.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="common_tests" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="simpleautogui" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/windows_tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/windows_tests/common_tests.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="point" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="simpleautogui" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/point.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="region" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="simpleautogui" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/region.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.region" />
+        <item itemvalue="Python.point" />
+        <item itemvalue="Python.common_tests (1)" />
+        <item itemvalue="Python.base" />
+        <item itemvalue="Python.common_tests" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="14ffe965-d29a-48b4-824a-a4321ccd1135" name="Changes" comment="" />
+      <created>1705106835775</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1705106835775</updated>
+      <workItem from="1705106838676" duration="19924000" />
+      <workItem from="1705207480759" duration="89000" />
+      <workItem from="1705207609501" duration="25001000" />
+      <workItem from="1705345975599" duration="1950000" />
+      <workItem from="1705354219075" duration="40677000" />
+      <workItem from="1705459949986" duration="372000" />
+      <workItem from="1705460323244" duration="1829000" />
+    </task>
+    <task id="LOCAL-00001" summary="Edit pyproject.toml">
+      <created>1705109112378</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1705109112378</updated>
+    </task>
+    <task id="LOCAL-00002" summary="fix pyproject.toml">
+      <created>1705117641540</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1705117641540</updated>
+    </task>
+    <task id="LOCAL-00003" summary="tests to .gitignore">
+      <created>1705117746817</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1705117746817</updated>
+    </task>
+    <task id="LOCAL-00004" summary="tests to .gitignore">
+      <created>1705117840488</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1705117840488</updated>
+    </task>
+    <task id="LOCAL-00005" summary="tests to .gitignore">
+      <created>1705117893718</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1705117893718</updated>
+    </task>
+    <task id="LOCAL-00006" summary="up version">
+      <created>1705118299982</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1705118299982</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add docs">
+      <created>1705261150795</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1705261150795</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fix">
+      <created>1705261265660</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1705261265660</updated>
+    </task>
+    <task id="LOCAL-00009" summary="fix">
+      <created>1705261339079</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1705261339079</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fix">
+      <created>1705261357102</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1705261357102</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fix">
+      <created>1705442930507</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1705442930507</updated>
+    </task>
+    <task id="LOCAL-00012" summary="fix">
+      <created>1705456931864</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1705456931864</updated>
+    </task>
+    <task id="LOCAL-00013" summary="fix">
+      <created>1705459968982</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1705459968982</updated>
+    </task>
+    <task id="LOCAL-00014" summary="fix">
+      <created>1705460039136</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1705460039136</updated>
+    </task>
+    <task id="LOCAL-00015" summary="fix">
+      <created>1705460074949</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1705460074949</updated>
+    </task>
+    <task id="LOCAL-00016" summary="fix">
+      <created>1705460748716</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1705460748716</updated>
+    </task>
+    <task id="LOCAL-00017" summary=" fix ..">
+      <created>1705461358824</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1705461358824</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Edit pyproject.toml" />
+    <MESSAGE value="fix pyproject.toml" />
+    <MESSAGE value="tests to .g" />
+    <MESSAGE value="tests to .gitignore" />
+    <MESSAGE value="up version" />
+    <MESSAGE value="add docs" />
+    <MESSAGE value="fix" />
+    <MESSAGE value=" fix .." />
+    <option name="LAST_COMMIT_MESSAGE" value=" fix .." />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/simpleautogui$point.coverage" NAME="point Coverage Results" MODIFIED="1705440838527" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/simpleautogui$common.coverage" NAME="common Coverage Results" MODIFIED="1705107261198" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/simpleautogui/windows" />
+    <SUITE FILE_PATH="coverage/simpleautogui$common_tests.coverage" NAME="common_tests Coverage Results" MODIFIED="1705108136873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests/windows_tests" />
+    <SUITE FILE_PATH="coverage/simpleautogui$common__1_.coverage" NAME="common (1) Coverage Results" MODIFIED="1705213014831" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/simpleautogui/screen/classes" />
+    <SUITE FILE_PATH="coverage/simpleautogui$region.coverage" NAME="region Coverage Results" MODIFIED="1705443843602" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/simpleautogui$common_tests__1_.coverage" NAME="common_tests (1) Coverage Results" MODIFIED="1705363847153" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests/screen_tests" />
+  </component>
+</project>
