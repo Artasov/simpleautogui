@@ -1,11 +1,3 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# For the full list of built-in configuration values, see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
-
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-
 import os
 import sys
 
@@ -15,7 +7,6 @@ project = 'simpleautogui'
 copyright = '2024, artasov'
 author = 'artasov'
 release = '0.0.4'
-templates_path = ['./_templates']
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -30,6 +21,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 html_theme = 'furo'
 html_static_path = ['_static']
+templates_path = ['./_templates']
 html_baseurl = 'https://artasov.github.io/simpleautogui/'
 html_css_files = [
     'css/custom.css',
