@@ -120,3 +120,5 @@ data
 ./tests/**/**/**/
 ./tests/**/**/**/**/
 
+src/docs/build/
+examples/
