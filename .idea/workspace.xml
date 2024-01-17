@@ -4,197 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14ffe965-d29a-48b4-824a-a4321ccd1135" name="Changes" comment=" fix ..">
-      <change afterPath="$PROJECT_DIR$/.buildinfo" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_modules/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_modules/simpleautogui/base/classes/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_modules/simpleautogui/base/classes/notify.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_modules/simpleautogui/screen/utils/colors.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_modules/simpleautogui/screen/utils/images.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_modules/simpleautogui/screen/utils/proximity.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_modules/simpleautogui/win/windows.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/README.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/changelog.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/contact.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/examples.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/faq.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/index.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/modules.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/quickstart.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.base.classes.base.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.base.classes.notify.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.base.classes.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.base.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.screen.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.screen.utils.colors.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.screen.utils.images.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.screen.utils.proximity.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.screen.utils.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.win.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_sources/simpleautogui.win.windows.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/basic.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/css/custom.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/css/custom.sass" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/debug.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/doctools.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/documentation_options.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/file.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/js/custom.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/language_data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/minus.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/plus.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/pygments.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/scripts/furo-extensions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/scripts/furo.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/scripts/furo.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/scripts/furo.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/searchtools.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/skeleton.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/sphinx_highlight.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/styles/furo-extensions.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/styles/furo-extensions.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/styles/furo.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_static/styles/furo.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/changelog.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/contact.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/faq.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/genindex.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modules.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/objects.inv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/py-modindex.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/quickstart.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/search.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/searchindex.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simpleautogui.base.classes.base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simpleautogui.base.classes.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simpleautogui.base.classes.notify.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simpleautogui.base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simpleautogui.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simpleautogui.screen.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simpleautogui.screen.utils.colors.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simpleautogui.screen.utils.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simpleautogui.screen.utils.images.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simpleautogui.screen.utils.proximity.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simpleautogui.win.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simpleautogui.win.windows.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/README.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/changelog.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/contact.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/environment.pickle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/examples.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/faq.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/index.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/modules.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/quickstart.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.base.classes.base.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.base.classes.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.base.classes.notify.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.base.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.screen.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.screen.utils.colors.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.screen.utils.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.screen.utils.images.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.screen.utils.proximity.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.win.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/doctrees/simpleautogui.win.windows.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/.buildinfo" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/README.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/simpleautogui/base/classes/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/simpleautogui/base/classes/notify.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/simpleautogui/screen/utils/colors.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/simpleautogui/screen/utils/images.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/simpleautogui/screen/utils/proximity.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_modules/simpleautogui/win/windows.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/README.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/changelog.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/contact.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/examples.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/faq.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/index.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/modules.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/quickstart.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.base.classes.base.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.base.classes.notify.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.base.classes.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.base.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.screen.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.screen.utils.colors.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.screen.utils.images.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.screen.utils.proximity.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.screen.utils.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.win.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_sources/simpleautogui.win.windows.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/basic.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/css/custom.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/css/custom.sass" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/debug.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/doctools.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/documentation_options.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/file.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/js/custom.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/language_data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/minus.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/plus.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/pygments.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/scripts/furo-extensions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/scripts/furo.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/scripts/furo.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/scripts/furo.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/searchtools.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/skeleton.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/sphinx_highlight.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/styles/furo-extensions.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/styles/furo-extensions.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/styles/furo.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/_static/styles/furo.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/changelog.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/contact.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/examples.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/faq.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/genindex.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/modules.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/objects.inv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/py-modindex.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/quickstart.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/search.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/searchindex.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.base.classes.base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.base.classes.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.base.classes.notify.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.screen.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.screen.utils.colors.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.screen.utils.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.screen.utils.images.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.screen.utils.proximity.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.win.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/docs/build/html/simpleautogui.win.windows.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/point.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/region.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/wait_color.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/wait_image.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/req.txt" beforeDir="false" />
-    </list>
+    <list default="true" id="14ffe965-d29a-48b4-824a-a4321ccd1135" name="Changes" comment=" fix .." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -399,7 +209,7 @@
       <workItem from="1705345975599" duration="1950000" />
       <workItem from="1705354219075" duration="40677000" />
       <workItem from="1705459949986" duration="372000" />
-      <workItem from="1705460323244" duration="1829000" />
+      <workItem from="1705460323244" duration="2134000" />
     </task>
     <task id="LOCAL-00001" summary="Edit pyproject.toml">
       <created>1705109112378</created>
@@ -520,7 +330,14 @@
       <option name="project" value="LOCAL" />
       <updated>1705461358824</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary=" fix ..">
+      <created>1705462160575</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1705462160575</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
