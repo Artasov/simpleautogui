@@ -18,6 +18,7 @@ dependencies = [
     "pywin32 >= 306",
     "pytesseract >= 0.3.10",
     "mouse >= 0.7.1",
+    "webcolors >= 1.13",
     "keyboard >= 0.13.5",
 ]
 

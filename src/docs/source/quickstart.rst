@@ -131,28 +131,25 @@ Screen
       from simpleautogui import screen
 
       # Waits for the image to appear and clicks on its center.
-      screen.waitImage('image.png').click()
+      waitImage('image.png').click()
 
       # Waits for one of several images to appear and clicks...
-      screen.waitImage(('image.png', 'image2.png)).click()
+      waitImage(('image.png', 'image2.png')).click()
 
   The same function but with all the arguments.
   Subsequent functions will be shown more briefly, please read the detailed docs for more details.
 
   .. code-block:: python
 
-      from simpleautogui import screen
-
-
       # Same thing, but more details
-      result: Region | None = screen.waitImage(
-          paths='image.png', # Path or list of paths to the images to be searched.
-          timeout=10000, # Time in milliseconds to wait for the images.
+      result: Region | None = waitImage(
+          paths='image.png',  # Path or tuple of paths to the images to be searched.
+          timeout=10000,  # Time in milliseconds to wait for the images.
           confidence=0.9,  # The confidence with which to match the images.
-          error_dialog=False, # If True, shows an error dialog if the images are not found.
+          error_dialog=False,  # If True, shows an error dialog if the images are not found.
           # Displays an error dialog and asks the user whether to continue exec code or stop.
-          region=(0, 0, size().width, size().height), # The region of the screen to search in.
-          check_interval=100, # Interval in milliseconds between checks.
+          region=(0, 0, size().width, size().height),  # The region of the screen to search in.
+          check_interval=100,  # Interval in milliseconds between checks.
       )
       result.click()
 
@@ -166,14 +163,14 @@ Screen
 
       from simpleautogui import screen
 
-      images = screen.waitImages('image.png')
+      images = waitImages('image.png')
       for img in images:
-        img.click()
+          img.click()
       # with args
-      images: Region | [] = screen.waitImages(
-          paths='image.png',  # Path or list of paths to the images to be searched.
+      images: Region | [] = waitImages(
+          paths='image.png',  # Path or tuple of paths to the images to be searched.
           timeout=10000,  # Time in milliseconds to wait for the images.
-          confidence=0.9,   # The confidence with which to match the images.
+          confidence=0.9,  # The confidence with which to match the images.
           error_dialog=False,  # If True, shows an error dialog if the images are not found.
           region=(0, 0, size().width, size().height),  # The region of the screen to search in.
           check_interval=100,  # Interval in milliseconds between checks.
@@ -181,31 +178,49 @@ Screen
           min_matches=1  # Minimum number of matches.
       )
 
+* **waitColor and waitColors**
+
+  Waits for a specified color or colors to appear on the screen within a timeout.
+
+  .. code-block:: python
+      from pyautogui import size
+      from simpleautogui import Point
+      from simpleautogui.screen import waitColor, waitColors
+
+      point: Point = waitColor('red')
+      if point:
+          print(f"Found red color at {point.x}, {point.y}")
+      else:
+          print("Red color not found")
+
+      point: Point = waitColor(
+          color=('#00ff00', 'rgb(255, 0, 0)'),
+          timeout=10000,
+          confidence=0.9,
+          error_dialog=False,
+          region=(0, 0, size().width, size().height),
+          check_interval=100
+      )
+      if point:
+          point.click()
+      else:
+          print("Green color not found")
+
+      points: list[Point] = waitColors(
+          color=('rgb(255, 0, 0)', '#00ff00', 'blue'),
+          timeout=10000,
+          confidence=0.9,
+          error_dialog=False,
+          region=(0, 0, size().width, size().height),
+          check_interval=100,
+          proximity_threshold_px=2,
+          min_matches=0  # if 0 return all founded else count first founded
+      )
+      if points:
+          for point in points:
+              point.click()
+      else:
+          print("Specified colors not found")
 
 
 
-
-Lastly, for functions:
-
-Utility Functions:
-SimpleAutoGUI also includes several utility functions that allow for
-more advanced screen interaction. These include waiting for a particular
-color or image to appear within a specified timeout
-(waitColor, waitImage), extracting text from a region on the
-screen (findText), and arranging windows in a specific layout
-(arrange_windows_in_grid_by_title).
-
-These functions extend the capability of the SimpleAutoGUI
-library, providing you with tools to automate complex tasks
-based on visual cues from the screen.
-
-To utilize these functions, simply call them with the required
-parameters as shown in the Quick Start examples. They can be
-combined with the Point and Region classes for even more powerful
-and flexible screen automation scripts.
-
-Remember to consult the SimpleAutoGUI API documentation for
-detailed information on all available classes, methods, and
-functions. This will help you understand the full scope of
-the library's functionality and how to best incorporate it
-into your automation tasks.

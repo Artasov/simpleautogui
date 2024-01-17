@@ -167,18 +167,19 @@ class Region:
 
     def findText(self, text: str, lang: str = 'eng+rus', contrast: int | float = 0,
                  resize: int = 0, sharpen: bool = True, case_sensitive: bool = False,
-                 **image_to_string_kwargs) -> list['Region']:
+                 min_confidence: int = 80, **image_to_data_kwargs) -> list['Region']:
         """
-        Searches for the specified text within the region and returns regions containing the text.
+        Searches for the specified text within the region using OCR and returns regions containing the text.
 
         :param text: The text to search for.
-        :param lang: Language(s) for OCR, separated by a plus sign (e.g., 'eng+rus').
-        :param contrast: Level of contrast enhancement to apply to the image. 0 means no enhancement.
-        :param resize: Scaling factor to apply to the image. 0 means no scaling.
-        :param sharpen: Whether to apply a sharpening filter to the image.
-        :param case_sensitive: Whether the search should be case-sensitive.
-        :param image_to_string_kwargs: Additional keyword arguments for pytesseract.image_to_boxes.
-        :return: List of Region objects containing the text.
+        :param lang: Language(s) for OCR, separated by a plus sign (e.g., 'eng+rus'). Default is 'eng+rus'.
+        :param contrast: Level of contrast enhancement to apply to the image. 0 means no enhancement. Can be a float.
+        :param resize: Scaling factor to apply to the image. 0 means no scaling. This is an integer value.
+        :param sharpen: Whether to apply a sharpening filter to the image. Default is True.
+        :param case_sensitive: Whether the search should be case-sensitive. Default is False.
+        :param min_confidence: The minimum confidence level (from 0 to 100) to accept a text match. Default is 0.
+        :param image_to_data_kwargs: Additional keyword arguments for pytesseract.image_to_data.
+        :return: A list of Region objects containing the matched text. Each region represents the bounding box of the text.
         """
         image = pg.screenshot(region=(self.x, self.y, self.width, self.height))
 
@@ -190,37 +191,22 @@ class Region:
         if sharpen:
             image = image.filter(ImageFilter.SHARPEN)
 
-        boxes = pytesseract.image_to_boxes(image, lang=lang, **image_to_string_kwargs)
+        data = pytesseract.image_to_data(image, lang=lang, output_type=pytesseract.Output.DICT,
+                                         **image_to_data_kwargs)
         regions = []
         text = text if case_sensitive else text.lower()
-        current_text = ""
-        current_region = [0, 0, 0, 0]
 
-        for box in boxes.splitlines():
-            b = box.split(' ')
-            char = b[0]
-            char = char if case_sensitive else char.lower()
+        n_boxes = len(data['text'])
+        for i in range(n_boxes):
+            if int(data['conf'][i]) >= min_confidence:
+                if case_sensitive:
+                    detected_text = data['text'][i]
+                else:
+                    detected_text = data['text'][i].lower()
 
-            # Adjusted the coordinates to account for the region's position
-            x1, y1, x2, y2 = map(int, b[1:5])
-            y1 = image.height - y1
-            y2 = image.height - y2
-
-            if text.startswith(current_text + char):
-                if not current_text:  # first character of the match
-                    current_region = [x1, y2, x2, y1]
-                else:  # expand the region to include current char
-                    current_region[2] = x2
-                    current_region[3] = y1
-
-                current_text += char
-
-                if current_text == text:  # full match
-                    x, y, w, h = current_region
-                    regions.append(Region(self.x + x, self.y + y, w - x, h - y))
-                    current_text = ""  # reset for next possible match
-            else:
-                current_text = ""  # reset current text as it's not a match
+                if detected_text == text:
+                    (x, y, w, h) = (data['left'][i], data['top'][i], data['width'][i], data['height'][i])
+                    regions.append(Region(self.x + x, self.y + y, w, h))
 
         return regions
 

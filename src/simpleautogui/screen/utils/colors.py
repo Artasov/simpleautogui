@@ -9,13 +9,13 @@ from simpleautogui.screen.utils.proximity import remove_proximity_points
 
 
 def waitColor(
-        color: str | list[str],
+        color: str | tuple[str, ...],
         timeout: int = 10000,
         confidence: float = 0.9,
         error_dialog: bool = False,
         region: tuple[int, int, int, int] = (0, 0, size().width, size().height),
         check_interval: int = 100
-) -> bool:
+) -> Point | None:
     """
     Waits for a specified color or colors to appear on the screen within a timeout.
 
@@ -25,7 +25,7 @@ def waitColor(
     :param error_dialog: If True, shows an error dialog if the color is not found.
     :param region: The region of the screen to search in.
     :param check_interval: Interval in milliseconds between checks.
-    :return: True if color is found, False otherwise.
+    :return: Point where the color is found, or None if not found.
     """
     if isinstance(color, str):
         color = [color]
@@ -34,17 +34,17 @@ def waitColor(
     while time() < end_time:
         for x in range(region[0], region[2]):
             for y in range(region[1], region[3]):
-                if any(pixelMatchesColor(x, y, c, tolerance=255 * (1 - confidence)) for c in color):
-                    return True
+                if any(pixelMatchesColor(x, y, c, tolerance=int(255 * (1 - confidence))) for c in color):
+                    return Point(x, y)
         sleep(check_interval / 1000)
 
-    if error_dialog and not Notify.confirm(f'{color[0]}'):
-        raise ImageNotFoundException
-    return False
+    if error_dialog:
+        Notify.confirm(f'Color {color[0]} not found')
+    return None
 
 
 def waitColors(
-        colors: tuple[str, list[str]],
+        color: str | tuple[str, ...],
         timeout: int = 10000,
         confidence: float = 0.9,
         error_dialog: bool = False,
@@ -56,7 +56,7 @@ def waitColors(
     """
     Waits for multiple colors to appear on the screen within a specified timeout.
 
-    :param colors: Color or list of colors to be searched.
+    :param color: Color or list of colors to be searched.
     :param timeout: Time in milliseconds to wait for the colors.
     :param confidence: The confidence with which to match the colors.
     :param error_dialog: If True, shows an error dialog if the colors are not found.
@@ -64,18 +64,18 @@ def waitColors(
     :param check_interval: Interval in milliseconds between checks.
     :param proximity_threshold_px: Pixel distance to consider colors as distinct.
     :param min_matches: Minimum number of matches. If 0 then all matches will be returned.
-    :return: True if colors are found, False otherwise.
+    :return: List of Points where the colors are found, or None if not found.
     """
-    if isinstance(colors, str):
-        colors = [colors]
+    if isinstance(color, str):
+        color = [color]
 
     end_time = time() + (timeout / 1000)
     matches = []
     while time() < end_time:
         for x in range(region[0], region[2]):
             for y in range(region[1], region[3]):
-                for c in colors:
-                    if pixelMatchesColor(x, y, c, tolerance=255 * (1 - confidence)):
+                for c in color:
+                    if pixelMatchesColor(x, y, c, tolerance=int(255 * (1 - confidence))):
                         matches.append(Point(x, y))
                         if len(matches) >= min_matches != 0:
                             return remove_proximity_points(matches, proximity_threshold_px)
@@ -84,6 +84,6 @@ def waitColors(
 
     if matches and min_matches == 0:
         return remove_proximity_points(matches, proximity_threshold_px)
-    if error_dialog and not Notify.confirm(f'{colors[0]}'):
-        raise ImageNotFoundException
+    if error_dialog:
+        Notify.confirm(f'Colors {color[0]} not found')
     return None

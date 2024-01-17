@@ -11,7 +11,7 @@ from simpleautogui.screen.utils.proximity import remove_proximity_boxes
 
 
 def waitImage(
-        paths: str | list[str],
+        paths: str | tuple[str, ...],
         timeout: int = 10000,
         confidence: float = 0.9,
         error_dialog: bool = False,
@@ -21,6 +21,7 @@ def waitImage(
     """
     Waits for a specified image or images to appear on the screen within a timeout.
 
+    :rtype: object
     :param paths: Path or list of paths to the image(s) to be searched.
     :param timeout: Time in milliseconds to wait for the image(s).
     :param confidence: The confidence with which to match the image(s).
@@ -50,7 +51,7 @@ def waitImage(
 
 
 def waitImages(
-        paths: str | list[str],
+        paths: str | tuple[str, ...],
         timeout: int = 10000,
         confidence: float = 0.9,
         error_dialog: bool = False,
