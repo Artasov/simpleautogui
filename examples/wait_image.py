@@ -15,7 +15,7 @@ result: Region | None = waitImage(
     confidence=0.9,  # The confidence with which to match the images.
     error_dialog=False,  # If True, shows an error dialog if the images are not found.
     # Displays an error dialog and asks the user whether to continue exec code or stop.
-    region=(0, 0, size().width, size().height),  # The region of the screen to search in.
+    region=(0, 0, size().w, size().h),  # The region of the screen to search in.
     check_interval=100,  # Interval in milliseconds between checks.
 )
 result.click()
@@ -29,7 +29,7 @@ images: Region | [] = waitImages(
     timeout=10000,  # Time in milliseconds to wait for the images.
     confidence=0.9,  # The confidence with which to match the images.
     error_dialog=False,  # If True, shows an error dialog if the images are not found.
-    region=(0, 0, size().width, size().height),  # The region of the screen to search in.
+    region=(0, 0, size().w, size().h),  # The region of the screen to search in.
     check_interval=100,  # Interval in milliseconds between checks.
     proximity_threshold_px=2,  # Pixel distance to consider images as distinct.
     min_matches=1  # Minimum number of matches.

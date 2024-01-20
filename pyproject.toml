@@ -1,6 +1,6 @@
 [project]
 name = "simpleautogui"
-version = "0.0.4"
+version = "0.0.5"
 authors = [
     { name = "artasov", email = "ivanhvalevskey@gmail.com" }
 ]
@@ -10,7 +10,7 @@ requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Windows",
+    "Operating System :: Microsoft :: Windows",
 ]
 dependencies = [
     "PyAutoGUI >= 0.9.54",
@@ -20,6 +20,9 @@ dependencies = [
     "mouse >= 0.7.1",
     "webcolors >= 1.13",
     "keyboard >= 0.13.5",
+    "pydub >= 0.25.1",
+    "pillow >= 10.2.0",
+    "colour >= 0.1.5",
 ]
 
 [project.urls]

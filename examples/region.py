@@ -1,6 +1,6 @@
 from simpleautogui import Region
 
-# Define a region starting at x=100, y=200 with width=300 and height=400.
+# Define a region starting at x=100, y=200 with w=300 and h=400.
 r = Region(100, 200, 300, 400)
 
 # Click to the center at this region.
@@ -8,7 +8,7 @@ r = Region(100, 200, 300, 400)
 # r.click(center=False) u can.
 
 # Move the mouse to region center.
-# r.moveTo()
+# r.moveIn()
 # center=False u can.
 
 # Show this region (save screenshot like .png in local/temp and open it).
@@ -40,7 +40,7 @@ taskbar = Region()
 # result: list[Region] = taskbar.findText('Window')
 # if result:
 #     print(result[0])
-#     result[0].moveTo()
+#     result[0].moveIn()
 # else:
 #     print('Not found... Let\'s try to increase the size and increase the contrast')
 
@@ -51,11 +51,11 @@ result: list[Region] = taskbar.findText(
     contrast=0,
     resize=0,
     sharpen=True,
-    case_sensitive=False,
+    sensitive=False,
     min_confidence=80
 )
 if result:
     print(result[0])
-    result[0].moveTo(center=True)
+    result[0].moveIn(center=True)
 else:
     print('Not found... Try another image.')

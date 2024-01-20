@@ -34,4 +34,4 @@ p.moveTo(
     duration=0.0,
     logScreenshot=False,
 )
-# dragDropTo, dragDropRel same
+# dragTo, dragRel same

@@ -13,7 +13,7 @@ point: Point = waitColor(
     timeout=10000,
     confidence=0.9,
     error_dialog=False,
-    region=(0, 0, size().width, size().height),
+    region=(0, 0, size().w, size().h),
     check_interval=100
 )
 if point:
@@ -26,7 +26,7 @@ points: list[Point] = waitColors(
     timeout=10000,
     confidence=0.9,
     error_dialog=False,
-    region=(0, 0, size().width, size().height),
+    region=(0, 0, size().w, size().h),
     check_interval=100,
     proximity_threshold_px=2,
     min_matches=0  # if 0 return all founded else count first founded

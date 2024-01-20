@@ -96,24 +96,24 @@ pip install simpleautogui
           logScreenshot=True, # screenshot logging
       )
       
-      P(100, 100).moveTo(
+      P(100, 100).moveIn(
           oX=0,
           oY=0,
           # **move_kwargs
           duration=0.0,
           logScreenshot=False,
       )
-      # dragDropTo, dragDropRel same
+      # dragTo, dragRel same
       ```
   * ### Region
      The **Region** class represents a rectangular area on the screen.
-     It allows you to perform operations within this specified area,
-     like taking screenshots or searching for text.
-   
+    It allows you to perform operations within this specified area,
+    like taking screenshots or searching for text.
+
      ```python
      from simpleautogui import Region
      
-     # Define a region starting at x=100, y=200 with width=300 and height=400.
+     # Define a region starting at x=100, y=200 with w=300 and h=400.
      r = Region(100, 200, 300, 400)
      
      # Click to the center at this region.
@@ -121,7 +121,7 @@ pip install simpleautogui
      # r.click(center=False) u can.
      
      # Move the mouse to region center.
-     r.moveTo()
+     r.moveIn()
      # center=False u can.
      
      # Show this region (save screenshot like .png in local/temp and open it).
@@ -183,7 +183,7 @@ pip install simpleautogui
       confidence=0.9,  # The confidence with which to match the images.
       error_dialog=False,  # If True, shows an error dialog if the images are not found.
       # Displays an error dialog and asks the user whether to continue exec code or stop.
-      region=(0, 0, size().width, size().height),  # The region of the screen to search in.
+      region=(0, 0, size().w, size().h),  # The region of the screen to search in.
       check_interval=100,  # Interval in milliseconds between checks.
   )
   result.click()
@@ -233,7 +233,7 @@ pip install simpleautogui
       timeout=10000,
       confidence=0.9,
       error_dialog=False,
-      region=(0, 0, size().width, size().height),
+      region=(0, 0, size().w, size().h),
       check_interval=100
   )
   if point:
@@ -246,7 +246,7 @@ pip install simpleautogui
       timeout=10000,
       confidence=0.9,
       error_dialog=False,
-      region=(0, 0, size().width, size().height),
+      region=(0, 0, size().w, size().h),
       check_interval=100,
       proximity_threshold_px=2,
       min_matches=0  # if 0 return all founded else count first founded
