@@ -72,14 +72,17 @@ pip install simpleautogui
       # Create a points with x and y coordinates
       p = Point(100, 100)
       p2 = Point(500, 500)
+      # You can initialize Point using 0 or just 1 argument, 
+      # any missing arguments will be set to the current cursor position.
+      
       # Click at first point
       p.click()
-      # Move the mouse to first point
+      # Move the mouse to 'p' point
       p.moveTo()
       # Drag and drop 'p' to 'p2'.
-      p.dragDropTo(p2.x, p2.y)
+      p.dragTo(p2)
       # Drag and drop by offset
-      p.dragDropRel(400, 400)
+      p.dragRel(400, 400)
       ```
       Let me remind you that these are wrapper functions around **pyautogui** functions.
       Read more about arguments in the **pyautogui** documentation.
@@ -123,6 +126,7 @@ pip install simpleautogui
      # Move the mouse to region center.
      r.moveIn()
      # center=False u can.
+     # and u can use oX= and oY= offsets.
      
      # Show this region (save screenshot like .png in local/temp and open it).
      r.show()
@@ -154,6 +158,12 @@ pip install simpleautogui
          case_sensitive=False,
          **image_to_string_kwargs
      )
+     
+     # Filter matching regions with 10px precision
+     unique_regions: list[Region] = Region.remove_proximity(
+        regions=[Region(), Region(), Region(), ...],
+        proximity_threshold_px=10
+     )
      ```
   Both classes streamline the process of screen automation by providing a set of intuitive methods to interact with the GUI elements.
 
@@ -183,7 +193,7 @@ pip install simpleautogui
       confidence=0.9,  # The confidence with which to match the images.
       error_dialog=False,  # If True, shows an error dialog if the images are not found.
       # Displays an error dialog and asks the user whether to continue exec code or stop.
-      region=(0, 0, size().w, size().h),  # The region of the screen to search in.
+      region=(0, 0, size().w, size().h),  # The region of the fullscreen to search in.
       check_interval=100,  # Interval in milliseconds between checks.
   )
   result.click()
@@ -195,67 +205,104 @@ pip install simpleautogui
   Waits for multiple images to appear on the screen within a specified timeout.
 
   ```python
+  from simpleautogui import screen
 
-      from simpleautogui import screen
-
-      images = waitImages('image.png')
-      for img in images:
-          img.click()
-      # with args
-      images: Region | [] = waitImages(
-          paths='image.png',  # Path or tuple of paths to the images to be searched.
-          timeout=10000,  # Time in milliseconds to wait for the images.
-          confidence=0.9,  # The confidence with which to match the images.
-          error_dialog=False,  # If True, shows an error dialog if the images are not found.
-          region=(0, 0, size().width, size().height),  # The region of the screen to search in.
-          check_interval=100,  # Interval in milliseconds between checks.
-          proximity_threshold_px=2,  # Pixel distance to consider images as distinct.
-          min_matches=1  # Minimum number of matches.
-      )
+  images = waitImages('image.png')
+  for img in images:
+      img.click()
+  # with args
+  images: list[Region] = waitImages(
+      paths='image.png',  # Path or tuple of paths to the images to be searched.
+      timeout=10000,  # Time in milliseconds to wait for the images.
+      confidence=0.9,  # The confidence with which to match the images.
+      error_dialog=False,  # If True, shows an error dialog if the images are not found.
+      region=(0, 0, size().width, size().height),  # The region of the screen to search in.
+      check_interval=100,  # Interval in milliseconds between checks.
+      proximity_threshold_px=2,  # Pixel distance to consider images as distinct.
+      min_matches=1  # Minimum number of matches.
+  )
+  ```
 
 * ### **waitColor and waitColors**
 
   Waits for a specified color or colors to appear on the screen within a timeout.
+  ### NOT YET IMPLEMENTED
+[//]: # ()
+[//]: # (  ```python)
 
-  ```python
-  from pyautogui import size
-  from simpleautogui import Point
-  from simpleautogui.screen import waitColor, waitColors
+[//]: # (  from pyautogui import size)
 
-  point: Point = waitColor('red')
-  if point:
-      print(f"Found red color at {point.x}, {point.y}")
-  else:
-      print("Red color not found")
+[//]: # (  from simpleautogui import Point)
 
-  point: Point = waitColor(
-      color=('#00ff00', 'rgb(255, 0, 0)'),
-      timeout=10000,
-      confidence=0.9,
-      error_dialog=False,
-      region=(0, 0, size().w, size().h),
-      check_interval=100
-  )
-  if point:
-      point.click()
-  else:
-      print("Green color not found")
+[//]: # (  from simpleautogui.screen import waitColor, waitColors)
 
-  points: list[Point] = waitColors(
-      color=('rgb(255, 0, 0)', '#00ff00', 'blue'),
-      timeout=10000,
-      confidence=0.9,
-      error_dialog=False,
-      region=(0, 0, size().w, size().h),
-      check_interval=100,
-      proximity_threshold_px=2,
-      min_matches=0  # if 0 return all founded else count first founded
-  )
-  if points:
-      for point in points:
-          point.click()
-  else:
-      print("Specified colors not found")
-  ```
+[//]: # ()
+[//]: # (  point: Point = waitColor&#40;'red'&#41;)
+
+[//]: # (  if point:)
+
+[//]: # (      print&#40;f"Found red color at {point.x}, {point.y}"&#41;)
+
+[//]: # (  else:)
+
+[//]: # (      print&#40;"Red color not found"&#41;)
+
+[//]: # ()
+[//]: # (  point: Point = waitColor&#40;)
+
+[//]: # (      color=&#40;'#00ff00', 'rgb&#40;255, 0, 0&#41;'&#41;,)
+
+[//]: # (      timeout=10000,)
+
+[//]: # (      confidence=0.9,)
+
+[//]: # (      error_dialog=False,)
+
+[//]: # (      region=&#40;0, 0, size&#40;&#41;.w, size&#40;&#41;.h&#41;,)
+
+[//]: # (      check_interval=100)
+
+[//]: # (  &#41;)
+
+[//]: # (  if point:)
+
+[//]: # (      point.click&#40;&#41;)
+
+[//]: # (  else:)
+
+[//]: # (      print&#40;"Green color not found"&#41;)
+
+[//]: # ()
+[//]: # (  points: list[Point] = waitColors&#40;)
+
+[//]: # (      color=&#40;'rgb&#40;255, 0, 0&#41;', '#00ff00', 'blue'&#41;,)
+
+[//]: # (      timeout=10000,)
+
+[//]: # (      confidence=0.9,)
+
+[//]: # (      error_dialog=False,)
+
+[//]: # (      region=&#40;0, 0, size&#40;&#41;.w, size&#40;&#41;.h&#41;,)
+
+[//]: # (      check_interval=100,)
+
+[//]: # (      proximity_threshold_px=2,)
+
+[//]: # (      min_matches=0  # if 0 return all founded else count first founded)
+
+[//]: # (  &#41;)
+
+[//]: # (  if points:)
+
+[//]: # (      for point in points:)
+
+[//]: # (          point.click&#40;&#41;)
+
+[//]: # (  else:)
+
+[//]: # (      print&#40;"Specified colors not found"&#41;)
+
+[//]: # (  ```)
 
 

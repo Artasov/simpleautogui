@@ -2,22 +2,27 @@ import math
 from time import time, sleep
 from typing import Union
 
+import cv2
 import keyboard
 import mouse
+import numpy as np
 import pyautogui as pg
 import pytesseract
-from PIL import Image
+from PIL import Image, ImageGrab
 from PIL import ImageEnhance, ImageFilter
 from pyscreeze import pixelMatchesColor
 
 from simpleautogui.base.classes.notify import Notify
 from simpleautogui.screen.utils import hex_to_rgb
-from colour import Color
 
 
 class Point:
-    def __init__(self, x: int = 0, y: int = 0):
+    def __init__(self, x: int = None, y: int = None):
         self.clicked_position = None
+        if not all((x, y)):
+            current_position = pg.position()
+            x = current_position.x if x is None else x
+            y = current_position.y if y is None else y
         self.x = x
         self.y = y
 
@@ -44,24 +49,18 @@ class Point:
 
         pg.moveTo(self.x + oX, self.y + oY, **move_kwargs)
 
-    def dragDropTo(self, endX: int, endY: int, oX: int = 0, oY: int = 0, **drag_kwargs) -> None:
+    def dragTo(self, toPoint: 'Point', **drag_kwargs) -> None:
         """
-        Drags from the current Point with offset and drops to a target x,y.
+        Drags from the current Point and drops to a target Point.
         """
-        # Move to the starting point with offset
-        pg.moveTo(self.x + oX, self.y + oY)
+        self.moveTo()
+        pg.dragTo(toPoint.x, toPoint.y, **drag_kwargs)
 
-        # Drag to the end point
-        pg.dragTo(endX, endY, **drag_kwargs)
-
-    def dragDropRel(self, relX: int, relY: int, oX: int = 0, oY: int = 0, **drag_kwargs) -> None:
+    def dragRel(self, relX: int, relY: int, **drag_kwargs) -> None:
         """
         Drags from the current Point with offset to a relative position.
         """
-        # Move to the starting point with offset
-        pg.moveTo(self.x + oX, self.y + oY)
-
-        # Drag to the relative position
+        self.moveTo()
         pg.dragRel(relX, relY, **drag_kwargs)
 
     @property
@@ -69,7 +68,7 @@ class Point:
         pass
 
     @staticmethod
-    def input(button='right', timeout=10) -> Union['Point', None]:
+    def input(button='right', timeout=10) -> 'Point' | None:
         """
         Waits for a mouse click or keyboard button press and returns the cursor position.
 
@@ -83,7 +82,7 @@ class Point:
             if timeout and time() - start_time > timeout:
                 raise TimeoutError(f'input button={button} timeout.')
 
-            if button in ['left', 'right', 'middle'] and mouse.is_pressed(button):
+            if button in ('left', 'right', 'middle') and mouse.is_pressed(button):
                 position = pg.position()
                 return Point(position.x, position.y)
 
@@ -98,8 +97,8 @@ class Point:
         """
         Waits for two mouse clicks and returns the distance between the points.
 
-        :param sleep_after_first: Sleep seconds after first click.
         :param with_sign: If True, returns the distance considering the sign. If False, returns the absolute distance.
+        :param sleep_after_first: Sleep seconds after first click.
         :return: Distance between the two points.
         """
         point1 = Point().input()
@@ -318,19 +317,19 @@ class Region:
         pg.dragRel(relX, relY, **drag_kwargs)
 
     @staticmethod
-    def remove_proximity(boxes: list['Region'], proximity_threshold_px: int = 10) -> list['Region']:
+    def remove_proximity(regions: list['Region'], proximity_threshold_px: int = 10) -> list['Region']:
         """
         Filters out boxes that are within a certain proximity threshold.
 
-        :param boxes: List of Box objects to filter.
+        :param regions: List of Region objects to filter.
         :param proximity_threshold_px: Pixel threshold for determining proximity.
-        :return: List of filtered Box objects.
+        :return: List of filtered Region objects.
         """
         result = []
-        for box in boxes:
-            if not any(abs(box.x - b.x) <= proximity_threshold_px and abs(box.y - b.y) <= proximity_threshold_px
+        for region in regions:
+            if not any(abs(region.x - b.x) <= proximity_threshold_px and abs(region.y - b.y) <= proximity_threshold_px
                        for b in result):
-                result.append(box)
+                result.append(region)
         return result
 
     def waitImage(
@@ -422,37 +421,87 @@ class Region:
             raise pg.ImageNotFoundException
         return []
 
-    def waitColor(
-            self,
-            color: Color | list[Color],
-            timeout: int = 10000,
-            confidence: float = 0.9,
-            error_dialog: bool = False,
-            check_interval: int = 100
-    ) -> Point | None:
-        if isinstance(color, Color):
-            color = [color.rgb]
+    def waitColor(self, color, timeout=10000, confidence=0.9, error_dialog=False, check_interval=100):
+        if isinstance(color, str):
+            color = hex_to_rgb(color)
+        elif isinstance(color, tuple):
+            pass
         else:
-            color = [c.rgb for c in color]
+            raise TypeError(f'{color} color is not a tuple(r,g,b) or string(#rrggbb)')
 
-        # Convert RGB tuples to a format suitable for pixelMatchesColor
-        # (for example, multiply by 255 and cast to int if necessary)
-        color = [(int(r * 255), int(g * 255), int(b * 255)) for r, g, b in color]
+        start_time = time()
+        while True:
+            screenshot = ImageGrab.grab(bbox=(self.x, self.y, self.x + self.w, self.y + self.h))
+            image = np.array(screenshot)
+            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-        end_time = time() + (timeout / 1000)
-        region = self.toTuple()
-        while time() < end_time or timeout == 0:
-            for x in range(region[0], region[2]):
-                for y in range(region[1], region[3]):
-                    if any(pixelMatchesColor(x, y, c, tolerance=int(255 * confidence)) for c in color):
-                        return Point(x, y)
-                    if timeout == 0:
-                        return None
-            sleep(check_interval / 1000)
+            # Проверяем наличие цвета в изображении
+            found, point = self.check_color(image, color, confidence)
 
-        if error_dialog:
-            Notify.confirm(f'Color {color[0]} not found')
-        return None
+            if found:
+                # Корректируем точку с учетом региона
+                corrected_point = (point.x + self.x, point.y + self.y)
+                return Point(*corrected_point)
+
+            if time() - start_time > timeout / 1000:
+                if error_dialog:
+                    print("Color not found")
+                return None
+
+            sleep(check_interval / 1000.0)
+
+    @staticmethod
+    def check_color(image, color, confidence):
+        # Преобразование цвета в формат BGR
+        bgr_color = color[::-1]
+
+        # Рассчитываем границы для заданного диапазона цветов с учетом confidence
+        lower_bound = np.array([max(0, c - (255 - c) * (1 - confidence)) for c in bgr_color])
+        upper_bound = np.array([min(255, c + (255 - c) * (1 - confidence)) for c in bgr_color])
+        mask = cv2.inRange(image, lower_bound, upper_bound)
+
+        # Находим координаты точки
+        points = np.where(mask == 255)
+        if len(points[0]) > 0:
+            y, x = points[0][0], points[1][0]
+            return True, Point(x, y)
+
+        return False, None
+        # def waitColor(
+
+    #         self,
+    #         color: Color | list[Color],
+    #         timeout: int = 10000,
+    #         confidence: float = 0.9,
+    #         error_dialog: bool = False,
+    #         check_interval: int = 100
+    # ) -> Point | None:
+    #     """
+    #     Waits for a specified color to appear in the region within a timeout and return first founded.
+    #
+    #     :param color: Color to be searched.
+    #     :param timeout: Time in milliseconds to wait for the color(s).
+    #     :param confidence: The confidence with which to match the color(s).
+    #     :param error_dialog: If True, shows an error dialog if the color is not found.
+    #     :param check_interval: Interval in milliseconds between checks.
+    #     :return: Point where the color is found, or None if not found.
+    #     """
+    #     color = [(int(r * 255), int(g * 255), int(b * 255)) for r, g, b in color]
+    #
+    #     end_time = time() + (timeout / 1000)
+    #     region = self.toTuple()
+    #     while time() < end_time or timeout == 0:
+    #         for x in range(region[0], region[2]):
+    #             for y in range(region[1], region[3]):
+    #                 if any(pixelMatchesColor(x, y, c, tolerance=int(255 * confidence)) for c in color):
+    #                     return Point(x, y)
+    #                 if timeout == 0:
+    #                     return None
+    #         sleep(check_interval / 1000)
+    #
+    #     if error_dialog:
+    #         Notify.confirm(f'Color {color[0]} not found')
+    #     return None
 
     def waitColors(
             self,
