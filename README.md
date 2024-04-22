@@ -160,7 +160,7 @@ pip install simpleautogui
      )
      
      # Filter matching regions with 10px precision
-     unique_regions: list[Region] = Region.remove_proximity(
+     unique_regions: list[Region] = Region.removeProximity(
         regions=[Region(), Region(), Region(), ...],
         proximity_threshold_px=10
      )

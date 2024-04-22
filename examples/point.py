@@ -2,9 +2,9 @@ from time import sleep
 
 from simpleautogui import Point
 
-# print(Point().get_deviation())
+# print(Point().getDeviation())
 # sleep(1)
-# print(Point().get_distance())
+# print(Point().getDistance())
 
 # Create a points with x and y coordinates
 p = Point(100, 100)
