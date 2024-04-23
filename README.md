@@ -1,4 +1,4 @@
-# Introduction to `simpleautogui` <br>[Read the docs]()
+# Introduction to `simpleautogui`
 
 `simpleautogui` is a Python library designed to automate
 interaction with graphical user interfaces on Windows operating
