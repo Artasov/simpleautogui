@@ -12,7 +12,7 @@ from PIL import Image, ImageGrab
 from PIL import ImageEnhance, ImageFilter
 from pyscreeze import pixelMatchesColor
 
-from simpleautogui.base.classes.notify import Notify
+from simpleautogui.notify import Notify
 from simpleautogui.screen.utils import hex_to_rgb
 
 
@@ -39,7 +39,7 @@ class Point:
         """
         pg.click(self.x + oX, self.y + oY, **click_kwargs)
 
-    def moveTo(self, oX: int = 0, oY: int = 0, **move_kwargs) -> None:
+    def moveIn(self, oX: int = 0, oY: int = 0, **move_kwargs) -> None:
         """
         Moves the mouse cursor to the Point.
         :param oX: The offset added to the x-coordinate.
@@ -52,14 +52,14 @@ class Point:
         """
         Drags from the current Point and drops to a target Point.
         """
-        self.moveTo()
+        self.moveIn()
         pg.dragTo(toPoint.x, toPoint.y, **drag_kwargs)
 
     def dragRel(self, relX: int, relY: int, **drag_kwargs) -> None:
         """
         Drags from the current Point with offset to a relative position.
         """
-        self.moveTo()
+        self.moveIn()
         pg.dragRel(relX, relY, **drag_kwargs)
 
     @property
@@ -67,7 +67,7 @@ class Point:
         pass
 
     @staticmethod
-    def input(button='right', timeout=10) -> 'Point' | None:
+    def input(button='right', timeout=10) -> Union['Point', None]:
         """
         Waits for a mouse click or keyboard button press and returns the cursor position.
 
@@ -76,7 +76,6 @@ class Point:
         :return: Point object representing the cursor position or None if timeout is reached.
         """
         start_time = time()
-
         while True:
             if timeout and time() - start_time > timeout:
                 raise TimeoutError(f'input button={button} timeout.')
@@ -248,7 +247,7 @@ class Region:
              contrast: int = 0,
              resize: int = 0,
              sharpen: bool = True,
-             **image_to_string_kwargs: object) -> str:
+             **image_to_string_kwargs) -> str:
         """
         Recognizes and returns the text in the specified area of the screen.
 
@@ -293,7 +292,7 @@ class Region:
         :param center: If True, moves to the center of the box; otherwise moves to the top-left corner.
         :param oX: The offset added to the x-coordinate.
         :param oY: The offset added to the y-coordinate.
-        :param move_kwargs: Additional keyword arguments for pyautogui.moveTo().
+        :param move_kwargs: Additional keyword arguments for pyautogui.moveIn().
         """
 
         move_x = self.cx + oX if center else self.x + oX
@@ -312,7 +311,7 @@ class Region:
         """
         (Point(self.cx, self.cy)
          if center else
-         Point(self.x, self.y)).moveTo(oX, oY)
+         Point(self.x, self.y)).moveIn(oX, oY)
         pg.dragTo(to.x, to.y, **drag_kwargs)
 
     def dragRel(self, relX: int, relY: int, center: bool = True, oX: int = 0, oY: int = 0, **drag_kwargs) -> None:
@@ -328,11 +327,12 @@ class Region:
         """
         (Point(self.cx, self.cy)
          if center else
-         Point(self.x, self.y)).moveTo(oX, oY)
+         Point(self.x, self.y)).moveIn(oX, oY)
         pg.dragRel(relX, relY, **drag_kwargs)
 
     @staticmethod
-    def removeProximity(regions: list['Region'], proximity_threshold_px: int = 10) -> list['Region']:
+    def removeProximity(regions: list['Region', ...] | tuple['Region', ...],
+                        proximity_threshold_px: int = 10) -> list['Region']:
         """
         Filters out regions that are within a certain proximity threshold.
 
@@ -351,22 +351,21 @@ class Region:
 
     def waitImage(
             self,
-            paths: str | tuple[str, ...],
-            timeout: int = 10,
+            paths: str | tuple[str, ...] | list[str, ...],
+            timeout: int | float = 10,
             confidence: float = 0.9,
             error_dialog: bool = False,
-            check_interval: int = 0.1
+            check_interval: int | float = 0.1
     ) -> Union['Region', None]:
         """
         Waits for a specified image or images to appear in the region within a timeout.
 
-        :rtype: object
-        :param paths: Path or list of paths to the image(s) to be searched.
+        :param paths: Path or list/tuple of paths to the image(s) to be searched.
         :param timeout: Time in seconds to wait for the image(s).
         :param confidence: The confidence with which to match the image(s).
         :param error_dialog: If True, shows an error dialog if the image is not found.
         :param check_interval: Interval in seconds between checks.
-        :return: Point if image is found, None otherwise.
+        :return: Region if image is found, None otherwise.
         """
         if isinstance(paths, str):
             paths = [paths]
@@ -391,18 +390,18 @@ class Region:
 
     def waitImages(
             self,
-            paths: str | tuple[str, ...],
-            timeout: int = 10,
+            paths: str | tuple[str, ...] | list[str, ...],
+            timeout: int | float = 10,
             confidence: float = 0.9,
             error_dialog: bool = False,
-            check_interval: int = 0.1,
+            check_interval: int | float = 0.1,
             proximity_threshold_px: int = 2,
             min_matches: int = 1
     ) -> list['Region']:
         """
         Waits for multiple images to appear in the region within a specified timeout.
 
-        :param paths: Path or list of paths to the images to be searched.
+        :param paths: Path or list/tuple of paths to the images to be searched.
         :param timeout: Time in seconds to wait for the images.
         :param confidence: The confidence with which to match the images.
         :param error_dialog: If True, shows an error dialog if the images are not found.

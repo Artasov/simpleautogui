@@ -12,7 +12,7 @@ p2 = Point(500, 500)
 # Click at first point
 p.click()
 # Move the mouse to first point
-p.moveTo(duration=5)
+p.moveIn(duration=5)
 # Drag and drop 'p' to 'p2'.
 p.dragDropTo(p2.x, p2.y, duration=5)
 # Drag and drop by offset
@@ -27,7 +27,7 @@ p.click(
     logScreenshot=True,  # screenshot logging
 )
 
-p.moveTo(
+p.moveIn(
     oX=0,
     oY=0,
     # **move_kwargs

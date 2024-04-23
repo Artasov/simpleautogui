@@ -3,28 +3,37 @@ import win32con
 import win32gui
 
 from simpleautogui import Region
-from simpleautogui.win.windows.exceptions.base import DisplayMonitorEnumerationError
+from simpleautogui.win.windows.exceptions.base import (
+    DisplayMonitorEnumerationError, IncorrectWindowInitialization,
+    WindowByTitleNotFound, WindowSuchHwndDoesNotExist
+)
 
 
 class Window:
-    def __init__(self, hwnd=None, title=None):
+    def __init__(self, hwnd=None, title=None, index=0):
         """
         Initializes the window object. Can be initialized with a window handle (hwnd) or title.
         If title is provided, it doesn't need to be complete, a substring of the title is sufficient.
-        If multiple windows match the title, the first one found is used.
-        Raises WindowNotFound exception if the window cannot be identified by hwnd or title.
 
         :param hwnd: The handle of the window.
         :param title: The title or substring of the window title.
+        :param index: If more than one window is found by title, the window object by index will be returned,
+        the first(0) one by default.
         """
         self.hwnd = None
 
         if hwnd:
             self.hwnd = hwnd
+            if not self.exists():
+                raise WindowSuchHwndDoesNotExist(f'A window with this hwnd({self.hwnd}) does not exist.')
         elif title:
             hwnds = self.byTitle(title)
             if hwnds:
-                self.hwnd = hwnds[0]
+                self.hwnd = hwnds[index]
+            else:
+                raise WindowByTitleNotFound(f'Window with title \'{title}\' not found.')
+        else:
+            raise IncorrectWindowInitialization('hwnd= or title= parameter must be provided for Window initialization.')
 
     def __str__(self):
         return f'Window(\'{self.title}\')'
@@ -63,8 +72,20 @@ class Window:
         win32gui.EnumWindows(callback, windows)
         return windows
 
+    def exists(self, hwnd=None) -> bool:
+        """
+        Checks if a window exists by its hwnd.
+
+        :param hwnd: The handle of the window to check.
+        :return: True if the window exists, False otherwise.
+        """
+        return win32gui.IsWindow(hwnd or self.hwnd)
+
+    def isVisible(self) -> bool:
+        return win32gui.IsWindowVisible(self.hwnd)
+
     @classmethod
-    def byTitle(cls, title, case_sensitive: bool = False) -> list:
+    def byTitle(cls, title, case_sensitive: bool = False) -> list['Window']:
         """
         Finds windows by a partial match of their title and returns a list of Window objects.
         The search can be case-sensitive or insensitive.
@@ -89,7 +110,8 @@ class Window:
 
     def setGeometry(self, x=None, y=None, w=None, h=None, safe: bool = True):
         """
-        Changes the size and position of the window. If any arguments are not provided, those dimensions are not changed.
+        Changes the size and position of the window.
+        If any arguments are not provided, those dimensions are not changed.
 
         :param x: The x position of the window.
         :param y: The y position of the window.
@@ -153,8 +175,8 @@ class Monitor:
         self.flags = flags
         self.device = device
 
-    @staticmethod
-    def all() -> list['Monitor']:
+    @classmethod
+    def all(cls) -> list['Monitor']:
         monitors_info = []
         try:
             for hMonitor, hdcMonitor, pyRect in win32api.EnumDisplayMonitors():
@@ -171,38 +193,71 @@ class Monitor:
             device = monitor_info['Device']
 
             monitors.append(
-                Monitor(
-                    name,
-                    Region(monitor_rect[0], monitor_rect[1], monitor_rect[2], monitor_rect[3]),
-                    Region(work_rect[0], work_rect[1], work_rect[2], work_rect[3]),
-                    flags,
-                    device))
+                cls(
+                    name=name,
+                    fregion=Region(monitor_rect[0], monitor_rect[1], monitor_rect[2], monitor_rect[3]),
+                    wregion=Region(work_rect[0], work_rect[1], work_rect[2], work_rect[3]),
+                    flags=flags,
+                    device=device
+                )
+            )
         return monitors
 
 
-class WindowsCluster:
-    def __init__(self, windows: tuple[Window] | list[Window]):
-        self.windows = windows
+class WindowsGrid:
+    def __init__(self,
+                 windows: tuple[Window] | list[Window],
+                 rows: int, cols: int,
+                 region: Region = Region()
+                 ):
+        self.windows = list(windows)
+        self.rows = rows
+        self.cols = cols
+        self.region = region
 
     def __str__(self):
-        return 'WindowsCluster(\n    ' + ',\n    '.join(f'{window.title}' for window in self.windows) + '\n)'
+        return 'WindowsGrid(\n    ' + ',\n    '.join(f'{window.title}' for window in self.windows) + '\n)'
 
     def __repr__(self):
         return self.__str__()
 
-    def inGrid(self, rows: int, cols: int, region: Region):
+    def append(self, window: Window):
+        """
+        Appends a window to the list of windows and arranges them.
+        """
+        self.windows.append(window)
+        self.arrange()
+
+    def prepend(self, window: Window):
+        """
+        Prepends a window to the list of windows and arranges them.
+        """
+        self.windows.insert(0, window)
+        self.arrange()
+
+    def insert(self, index: int, window: Window):
+        """
+        Inserts a window into the list of windows at the specified index and arranges them.
+
+        :param index: The index at which to insert the window.
+        :param window: The window to insert.
+        """
+        self.windows.insert(index, window)
+        self.arrange()
+
+    def arrange(self):
         for index, window in enumerate(self.windows):
-            region_w = region.w - region.x
-            region_h = region.h - region.y
+            region_w = self.region.w - self.region.x
+            region_h = self.region.h - self.region.y
 
             window.restore()
 
-            col = index % cols
-            row = (index // cols) % rows
+            col = index % self.cols
+            row = (index // self.cols) % self.rows
 
-            x = region.x + col * region_w // cols
-            y = region.y + row * region_h // rows
-            w = region_w // cols + (region_w % cols > col)
-            h = region_h // rows + (region_h % rows > row)
+            x = self.region.x + col * region_w // self.cols
+            y = self.region.y + row * region_h // self.rows
+            w = region_w // self.cols + (region_w % self.cols > col)
+            h = region_h // self.rows + (region_h % self.rows > row)
 
             window.setGeometry(x, y, w, h)

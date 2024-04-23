@@ -1,5 +1,13 @@
-class WindowNotFound(Exception):
-    """Exception raised when a window cannot be found."""
+class WindowByTitleNotFound(Exception):
+    """Exception raised when a window cannot be found by title."""
+    pass
+
+
+class IncorrectWindowInitialization(Exception):
+    pass
+
+
+class WindowSuchHwndDoesNotExist(Exception):
     pass
 
 

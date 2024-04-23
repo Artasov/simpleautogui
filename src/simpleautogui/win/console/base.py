@@ -21,18 +21,3 @@ def powershell(command):
         return result.stdout
     except Exception as e:
         raise CommandExecutionError(f"An error occurred while executing PowerShell command '{command}':\n{str(e)}")
-
-# Пример использования
-# try:
-#     output = cmd("dir")
-#     print("Output from cmd:")
-#     print(output)
-# except CommandExecutionError as e:
-#     print(e)
-#
-# try:
-#     output = powershell("ls")
-#     print("Output from PowerShell:")
-#     print(output)
-# except CommandExecutionError as e:
-#     print(e)

@@ -17,7 +17,7 @@ point: Point = waitColor(
     check_interval=100
 )
 if point:
-    point.moveTo()
+    point.moveIn()
 else:
     print("Green color not found")
 
@@ -33,6 +33,6 @@ points: list[Point] = waitColors(
 )
 if points:
     for point in points:
-        point.moveTo()
+        point.moveIn()
 else:
     print("Specified colors not found")

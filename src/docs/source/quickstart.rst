@@ -31,7 +31,7 @@ the mouse to its coordinates.
     # Click at first point
     p.click()
     # Move the mouse to first point
-    p.moveTo()
+    p.moveIn()
     # Drag and drop 'p' to 'p2'.
     p.dragDropTo(p2.x, p2.y)
     # Drag and drop by offset
@@ -54,7 +54,7 @@ Read more about arguments in the **pyautogui** documentation.
         logScreenshot=True, # screenshot logging
     )
 
-    P(100, 100).moveTo(
+    P(100, 100).moveIn(
         oX=0,
         oY=0,
         # **move_kwargs
@@ -82,7 +82,7 @@ like taking screenshots or searching for text.
     # r.click(center=False) u can.
 
     # Move the mouse to region center.
-    r.moveTo()
+    r.moveIn()
     # center=False u can.
 
     # Show this region (save screenshot like .png in local/temp and open it).
