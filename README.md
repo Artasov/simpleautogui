@@ -42,14 +42,10 @@ pip install simpleautogui
 ```
 
 ## Classes
-  `simpleautogui` provides two main classes: `Point` and `Region`,
-  which facilitate screen interaction.
-
   * ### Point
-    The **Point** class represents a specific location on the screen.
+    The `Point` class represents a specific location on the screen.
     It provides methods to perform actions like clicking or moving
     the mouse to its coordinates.
-
     ```python
     from simpleautogui import Point
     
@@ -59,6 +55,10 @@ pip install simpleautogui
     # You can initialize Point using 0 or just 1 argument, 
     # any missing arguments will be set to the current cursor position.
     
+    # Convert to tuple
+    p.toTuple()
+    # (100, 100)
+
     # Click at first point
     p.click()
     # Move the mouse to 'p' point
@@ -94,7 +94,7 @@ pip install simpleautogui
     ```
 
 * ### Region
-   The **Region** class represents a rectangular area on the screen.
+   The `Region` class represents a rectangular area on the screen.
   It allows you to perform operations within this specified area,
   like taking screenshots or searching for text.
 
@@ -156,6 +156,7 @@ pip install simpleautogui
       proximity_threshold_px=10
    )
    ```
+   ### More specific functions are listed in the section<br>[Special Features](#Special-Features).
 
 * ### Window
    `Window` is an abstraction of a window in the Windows operating system.
@@ -207,13 +208,60 @@ pip install simpleautogui
             window.restore()
             window.close()
     ```
-
+* ### WindowsGrid
+   `WindowsGrid` is a class representing a grid of windows.
+    It provides methods to append, prepend, and insert windows 
+    into the grid, as well as arrange them within the specified region.
+    ```python
+    from simpleautogui import Window, Region, WindowsGrid
+    
+    # Initialize a WindowsGrid with a list of windows, 
+    # number of rows and columns, and an optional region.
+    windows = Window.all()
+    grid = WindowsGrid(
+        windows=(windows[0], windows[1], windows[2]),    
+        rows=2, cols=2, 
+        region=Region(100, 100, 800, 600)
+    )
+    
+    # Append a new window to the grid.
+    grid.append(windows[3])
+    # Prepend a new window to the grid.
+    grid.prepend(windows[4])
+    # Insert a new window at a specific index in the grid.
+    grid.insert(index=2, window=windows[5]) 
+  
+    # Arrange the windows within the grid.
+    grid.arrange()
+    # append, prepend, insert automatically use arrange()  
+    
+    # Access to all grid windows
+    print(grid.windows)
+    ```
+* ### Monitor
+   `Monitor` is a class representing a monitor display in the Windows operating system.
+    It provides a convenient interface for obtaining information about monitors, such as
+    their name, screen regions, flags, and device information.
+    ```python
+    from simpleautogui import Monitor
+    
+    # Get information about all available monitors.
+    all_monitors = Monitor.all()
+    for monitor in all_monitors:
+        print(monitor.name)
+        print(f"Flags: {monitor.flags}")
+        print(f"Device: {monitor.device}")
+        print(f"Full region: {monitor.fregion}")
+        print(f"Work region: {monitor.wregion}")
+        print()
+    ```
+    > This class is more of an auxiliary than a full-fledged tool.
 
 Each of these classes streamline the process of screen automation by providing a set of intuitive methods to interact with the GUI elements.
 
 
 ## Special Features
-* ### `waitImage` `waitImages`
+* ## `waitImage` `waitImages`
    `waitImage` waits for a specified image or images to appear on the screen within a timeout.
 
    ```python
@@ -259,12 +307,12 @@ Each of these classes streamline the process of screen automation by providing a
    )
    ```
 
-* ### `waitColor` `waitColors`
+* ## `waitColor` `waitColors`
   Waits for a specified color or colors to appear on the screen within a timeout.
   #### NOT YET IMPLEMENTED
 
 
-* ### `cmd` `powershell`
+* ## `cmd` `powershell`
    Allows you to run `Windows` commands using `cmd` or `powershell`, 
    returns a string with console output or raise exception.   
    ```python

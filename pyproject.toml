@@ -1,13 +1,14 @@
 [project]
 name = "simpleautogui"
-version = "0.0.5"
+version = "0.0.6"
 authors = [
     { name = "artasov", email = "ivanhvalevskey@gmail.com" }
 ]
-description = "A wrapper around pyautogui that will make some automation processes easier."
+description = "A library that greatly simplifies the automation of the Windows graphical interface."
 readme = "README.md"
 requires-python = ">=3.11"
 classifiers = [
+    "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: Microsoft :: Windows",
@@ -16,13 +17,12 @@ dependencies = [
     "PyAutoGUI >= 0.9.54",
     "opencv-python >= 4.9.0.80",
     "pywin32 >= 306",
-    "pytesseract >= 0.3.10",
+    "pytesseract >= 0.3.1",
     "mouse >= 0.7.1",
     "webcolors >= 1.13",
     "keyboard >= 0.13.5",
     "pydub >= 0.25.1",
-    "pillow >= 10.2.0",
-    "colour >= 0.1.5",
+    "pillow >= 10.3.0",
 ]
 
 [project.urls]

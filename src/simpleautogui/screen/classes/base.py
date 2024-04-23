@@ -29,6 +29,9 @@ class Point:
     def __str__(self):
         return f'Point(x={self.x}, y={self.y})'
 
+    def toTuple(self) -> tuple[int, int]:
+        return self.x, self.y
+
     def click(self, oX: int = 0, oY: int = 0, **click_kwargs) -> None:
         """
         Wrapper on pg.click().
@@ -535,4 +538,3 @@ class Region:
         if error_dialog:
             Notify.continueOrStop(f'Colors {color[0]} not found')
         return None
-

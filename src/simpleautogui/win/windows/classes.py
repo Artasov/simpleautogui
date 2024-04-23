@@ -206,7 +206,7 @@ class Monitor:
 
 class WindowsGrid:
     def __init__(self,
-                 windows: tuple[Window] | list[Window],
+                 windows: tuple[Window, ...] | list[Window, ...],
                  rows: int, cols: int,
                  region: Region = Region()
                  ):

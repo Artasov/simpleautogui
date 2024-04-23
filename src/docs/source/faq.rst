@@ -1,5 +1,0 @@
-FAQ
----
-
-Q: Is SimpleAutoGUI free to use?
-A: Yes, it's licensed under the MIT license.
