@@ -7,20 +7,6 @@ underlying libraries, it provides a set of tools to simulate
 human interaction with the computer in a straightforward and
 efficient manner.
 
-## Modules
- 
-The library is organized into several modules, each providing
-distinct functionalities:
-
-* `Screen`: Contains convenient classes for interacting with 
-  the screen, functions for image search and text recognition.
-* `Win`: Provides functions to manipulate window geometry, search
-  for windows by title, and arrange windows in a grid
-  pattern. There are also convenient functions for executing 
-  Windows console commands.
-
-This library is under the MIT License.
-
 ## Dependencies
 `simpleautogui` relies on the following dependencies:
 
