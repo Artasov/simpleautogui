@@ -1,25 +1,21 @@
 import math
-from time import time, sleep
-from typing import Union
+from time import sleep, time
+from typing import Iterable
 
-import cv2
 import keyboard
 import mouse
 import numpy as np
 import pyautogui as pg
 import pytesseract
-from PIL import Image, ImageGrab
-from PIL import ImageEnhance, ImageFilter
-from pyscreeze import pixelMatchesColor
+from PIL import Image, ImageEnhance, ImageFilter, ImageGrab
 
 from simpleautogui.notify import Notify
-from simpleautogui.screen.utils import hex_to_rgb
+from simpleautogui.screen.utils import parse_color
 
 
 class Point:
     def __init__(self, x: int = None, y: int = None):
-        self.clicked_position = None
-        if not all((x, y)):
+        if x is None or y is None:
             current_position = pg.position()
             x = current_position.x if x is None else x
             y = current_position.y if y is None else y
@@ -29,54 +25,57 @@ class Point:
     def __str__(self):
         return f'Point(x={self.x}, y={self.y})'
 
-    def toTuple(self) -> tuple[int, int]:
+    def __repr__(self):
+        return self.__str__()
+
+    def to_tuple(self) -> tuple[int, int]:
         return self.x, self.y
 
-    def click(self, oX: int = 0, oY: int = 0, **click_kwargs) -> None:
+    def click(self, o_x: int = 0, o_y: int = 0, **click_kwargs) -> None:
         """
-        Wrapper on pg.click().
+        Wrapper on pyautogui.click().
 
-        :param oX: The offset added to the x-coordinate.
-        :param oY: The offset added to the y-coordinate.
+        :param o_x: The offset added to the x-coordinate.
+        :param o_y: The offset added to the y-coordinate.
         :param click_kwargs: Additional keyword arguments for pyautogui.click().
         """
-        pg.click(self.x + oX, self.y + oY, **click_kwargs)
+        pg.click(self.x + o_x, self.y + o_y, **click_kwargs)
 
-    def moveIn(self, oX: int = 0, oY: int = 0, **move_kwargs) -> None:
+    def move_in(self, o_x: int = 0, o_y: int = 0, **move_kwargs) -> None:
         """
-        Moves the mouse cursor to the Point.
-        :param oX: The offset added to the x-coordinate.
-        :param oY: The offset added to the y-coordinate.
-        :param move_kwargs: Additional keyword arguments for pyautogui.moveIn().
-        """
-        pg.moveTo(self.x + oX, self.y + oY, **move_kwargs)
+        Moves the mouse cursor to the point.
 
-    def dragTo(self, toPoint: 'Point', **drag_kwargs) -> None:
+        :param o_x: The offset added to the x-coordinate.
+        :param o_y: The offset added to the y-coordinate.
+        :param move_kwargs: Additional keyword arguments for pyautogui.moveTo().
         """
-        Drags from the current Point and drops to a target Point.
-        """
-        self.moveIn()
-        pg.dragTo(toPoint.x, toPoint.y, **drag_kwargs)
+        pg.moveTo(self.x + o_x, self.y + o_y, **move_kwargs)
 
-    def dragRel(self, relX: int, relY: int, **drag_kwargs) -> None:
+    def drag_to(self, to_point: 'Point', **drag_kwargs) -> None:
         """
-        Drags from the current Point with offset to a relative position.
+        Drags from the current point and drops to a target point.
         """
-        self.moveIn()
-        pg.dragRel(relX, relY, **drag_kwargs)
+        self.move_in()
+        pg.dragTo(to_point.x, to_point.y, **drag_kwargs)
+
+    def drag_rel(self, rel_x: int, rel_y: int, **drag_kwargs) -> None:
+        """
+        Drags from the current point with offset to a relative position.
+        """
+        self.move_in()
+        pg.dragRel(rel_x, rel_y, **drag_kwargs)
 
     @property
-    def color(self):
-        pass
+    def color(self) -> tuple[int, int, int]:
+        return pg.pixel(self.x, self.y)
 
     @staticmethod
-    def input(button='right', timeout=10) -> Union['Point', None]:
+    def input(button='right', timeout=10) -> 'Point':
         """
         Waits for a mouse click or keyboard button press and returns the cursor position.
 
-        :param button: The mouse button or keyboard key to listen for. Default is 'left'.
-        :param timeout: Time in seconds after which the method returns None if no input is detected.
-        :return: Point object representing the cursor position or None if timeout is reached.
+        :param button: The mouse button or keyboard key to listen for.
+        :param timeout: Time in seconds after which TimeoutError is raised.
         """
         start_time = time()
         while True:
@@ -94,13 +93,12 @@ class Point:
             sleep(0.01)
 
     @staticmethod
-    def getDistance(with_sign: bool = True, sleep_after_first: float | int = 0.2) -> float:
+    def get_distance(with_sign: bool = True, sleep_after_first: float | int = 0.2) -> float:
         """
         Waits for two mouse clicks and returns the distance between the points.
 
-        :param with_sign: If True, returns the distance considering the sign. If False, returns the absolute distance.
+        :param with_sign: Deprecated compatibility argument. Distance is always non-negative.
         :param sleep_after_first: Sleep seconds after first click.
-        :return: Distance between the two points.
         """
         point1 = Point().input()
         sleep(sleep_after_first)
@@ -108,74 +106,62 @@ class Point:
 
         dx = point2.x - point1.x
         dy = point2.y - point1.y
-
-        if with_sign:
-            return math.sqrt(dx ** 2 + dy ** 2)
-        else:
-            return math.sqrt(abs(dx) ** 2 + abs(dy) ** 2)
+        return math.sqrt(dx ** 2 + dy ** 2)
 
     @staticmethod
-    def getDeviation(with_sign: bool = True, sleep_after_first: float | int = 0.2) -> tuple[int, int]:
+    def get_deviation(with_sign: bool = True, sleep_after_first: float | int = 0.2) -> tuple[int, int]:
         """
-        Waits for TWO mouse clicks and returns the deviation in X and Y coordinates.
+        Waits for two mouse clicks and returns the deviation in X and Y coordinates.
 
+        :param with_sign: If True, returns deviation with sign. If False, returns absolute deviation.
         :param sleep_after_first: Sleep seconds after first click.
-        :param with_sign: If True, returns the deviation with sign. If False, returns the absolute deviation.
-        :return: A tuple (deviation_x, deviation_y) representing the deviation between the two points.
         """
         point1 = Point().input()
         sleep(sleep_after_first)
         point2 = Point().input()
         if not all((point1, point2)):
-            raise
+            raise TimeoutError('Unable to read two points.')
 
         deviation_x = point2.x - point1.x
         deviation_y = point2.y - point1.y
 
         if with_sign:
             return deviation_x, deviation_y
-        else:
-            return abs(deviation_x), abs(deviation_y)
+        return abs(deviation_x), abs(deviation_y)
 
     @staticmethod
-    def removeProximity(points: list['Point'], proximity_threshold_px: int) -> list['Point']:
+    def remove_proximity(points: Iterable['Point'], proximity_threshold_px: int) -> list['Point']:
         """
         Filters out points that are within a certain proximity threshold.
-
-        :param points: List of Point objects to filter.
-        :param proximity_threshold_px: Pixel threshold for determining proximity.
-        :return: List of filtered Point objects.
         """
         result = []
         for point in points:
-            if not any(abs(point.x - p.x) <= proximity_threshold_px
-                       and
-                       abs(point.y - p.y) <= proximity_threshold_px
-                       for p in result):
+            if not any(
+                    abs(point.x - saved_point.x) <= proximity_threshold_px
+                    and abs(point.y - saved_point.y) <= proximity_threshold_px
+                    for saved_point in result
+            ):
                 result.append(point)
         return result
 
 
 class Region:
     """
-    Represents a rectangular area on the screen, providing methods to interact with it.
-
-    :param x: The x-coordinate of the top-left corner of the region.
-    :param y: The y-coordinate of the top-left corner of the region.
-    :param w: The w of the region.
-    :param h: The h of the region.
+    Represents a rectangular area on the screen.
     """
 
-    def __init__(self,
-                 x: int = 0,
-                 y: int = 0,
-                 w: int = pg.size().width,
-                 h: int = pg.size().height):
+    def __init__(
+            self,
+            x: int = 0,
+            y: int = 0,
+            w: int = None,
+            h: int = None
+    ):
+        screen_size = pg.size()
         self.x = x
         self.y = y
-        self.w = w
-        self.h = h
-
+        self.w = screen_size.width if w is None else w
+        self.h = screen_size.height if h is None else h
         self.cx = self.x + self.w // 2
         self.cy = self.y + self.h // 2
 
@@ -183,217 +169,186 @@ class Region:
         return f'Region(x={self.x}, y={self.y}, w={self.w}, h={self.h}, cx={self.cx}, cy={self.cy})'
 
     def __repr__(self):
-        return f'Region(x={self.x}, y={self.y}, w={self.w}, h={self.h}, cx={self.cx}, cy={self.cy})'
+        return self.__str__()
 
     def show(self):
         """
-        Show region by Pillow.show() method.
+        Shows region by Pillow.show() method.
         """
-        pg.screenshot(region=self.toTuple()).show()
+        self.screenshot().show()
 
-    def toTuple(self) -> tuple[int, int, int, int]:
+    def to_tuple(self) -> tuple[int, int, int, int]:
         return self.x, self.y, self.w, self.h
 
-    def findText(self, text: str,
-                 lang: str = 'eng+rus',
-                 contrast: int | float = 0,
-                 resize: int = 0,
-                 sharpen: bool = True,
-                 case_sensitive: bool = False,
-                 min_confidence: int = 80,
-                 **image_to_data_kwargs
-                 ) -> list['Region']:
+    def screenshot(self):
+        return pg.screenshot(region=self.to_tuple())
+
+    def find_text(
+            self,
+            text: str,
+            lang: str = 'eng+rus',
+            contrast: int | float = 0,
+            resize: int | float = 0,
+            sharpen: bool = True,
+            case_sensitive: bool = False,
+            min_confidence: int = 80,
+            **image_to_data_kwargs
+    ) -> list['Region']:
         """
-        Searches for the specified text within the region using OCR and returns regions containing the text.
-
-        :param text: The text to search for.
-        :param lang: Language(s) for OCR, separated by a plus sign (e.g., 'eng+rus'). Default is 'eng+rus'.
-        :param contrast: Level of contrast enhancement to apply to the image. 0 means no enhancement. Can be a float.
-        :param resize: Scaling factor to apply to the image. 0 means no scaling. This is an integer value.
-        :param sharpen: Whether to apply a sharpening filter to the image. Default is True.
-        :param case_sensitive: Whether the search should be case-sensitive. Default is False.
-        :param min_confidence: The minimum confidence level (from 0 to 100) to accept a text match. Default is 0.
-        :param image_to_data_kwargs: Additional keyword arguments for pytesseract.image_to_data.
-        :return: A list of Region objects containing the matched text. Each region represents the bounding box of the text.
+        Searches text within the region using OCR and returns matching regions.
         """
-        image = pg.screenshot(region=self.toTuple())
+        image, scale = self._preprocess_image(
+            self.screenshot(),
+            contrast=contrast,
+            resize=resize,
+            sharpen=sharpen,
+        )
+        data = pytesseract.image_to_data(
+            image,
+            lang=lang,
+            output_type=pytesseract.Output.DICT,
+            **image_to_data_kwargs,
+        )
+        search_text = self._normalize_text(text, case_sensitive)
+        if not search_text:
+            return []
 
-        if resize:
-            image = image.resize([int(resize * s) for s in image.size], Image.LANCZOS)
-        if contrast:
-            enhancer = ImageEnhance.Contrast(image)
-            image = enhancer.enhance(contrast)
-        if sharpen:
-            image = image.filter(ImageFilter.SHARPEN)
-
-        data = pytesseract.image_to_data(image, lang=lang, output_type=pytesseract.Output.DICT,
-                                         **image_to_data_kwargs)
         regions = []
-        text = text if case_sensitive else text.lower()
+        line_items = {}
+        for index in range(len(data['text'])):
+            detected_text = data['text'][index].strip()
+            if not detected_text or self._read_confidence(data['conf'][index]) < min_confidence:
+                continue
 
-        n_boxes = len(data['text'])
-        for i in range(n_boxes):
-            if int(data['conf'][i]) >= min_confidence:
-                if case_sensitive:
-                    detected_text = data['text'][i]
-                else:
-                    detected_text = data['text'][i].lower()
+            item = {
+                'text': detected_text,
+                'left': self._data_value(data, 'left', index),
+                'top': self._data_value(data, 'top', index),
+                'width': self._data_value(data, 'width', index),
+                'height': self._data_value(data, 'height', index),
+            }
 
-                if detected_text == text:
-                    (x, y, w, h) = (data['left'][i], data['top'][i], data['w'][i], data['h'][i])
-                    regions.append(Region(self.x + x, self.y + y, w, h))
+            if self._normalize_text(detected_text, case_sensitive) == search_text:
+                regions.append(self._bbox_region(self, [item], scale))
 
-        return regions
+            line_items.setdefault(self._line_key(data, index), []).append(item)
 
-    def text(self,
-             lang: str = 'eng+rus',
-             contrast: int = 0,
-             resize: int = 0,
-             sharpen: bool = True,
-             **image_to_string_kwargs) -> str:
+        if ' ' in search_text:
+            for items in line_items.values():
+                line_text = self._normalize_text(' '.join(item['text'] for item in items), case_sensitive)
+                if search_text in line_text:
+                    regions.append(self._bbox_region(self, items, scale))
+
+        return self.remove_proximity(regions)
+
+    def text(
+            self,
+            lang: str = 'eng+rus',
+            contrast: int | float = 0,
+            resize: int | float = 0,
+            sharpen: bool = True,
+            **image_to_string_kwargs
+    ) -> str:
         """
-        Recognizes and returns the text in the specified area of the screen.
-
-        :param lang: Language(s) for OCR, separated by a plus sign (e.g., 'eng+rus').
-        :param contrast: Level of contrast enhancement to apply to the image. 0 means no enhancement.
-        :param resize: Scaling factor to apply to the image. 0 means no scaling.
-        :param sharpen: Whether to apply a sharpening filter to the image.
-        :param image_to_string_kwargs: Additional keyword arguments for pytesseract.image_to_string.
-        :return: Recognized text as a string.
+        Recognizes and returns text in the specified screen region.
         """
-        image = pg.screenshot(region=self.toTuple())
-
-        if resize:
-            image = image.resize([resize * s for s in image.size], Image.LANCZOS)
-        if contrast:
-            enhancer = ImageEnhance.Contrast(image)
-            image = enhancer.enhance(contrast)
-        if sharpen:
-            image = image.filter(ImageFilter.SHARPEN)
-
+        image, _ = self._preprocess_image(
+            self.screenshot(),
+            contrast=contrast,
+            resize=resize,
+            sharpen=sharpen,
+        )
         return pytesseract.image_to_string(image, lang=lang, **image_to_string_kwargs)
 
-    def click(self, center: bool = True,
-              oX: int = 0, oY: int = 0,
-              **click_kwargs) -> None:
+    def click(self, center: bool = True, o_x: int = 0, o_y: int = 0, **click_kwargs) -> None:
         """
-        Performs a mouse click on the Region.
-
-        :param center: If True, clicks the center of the box; otherwise clicks the top-left corner.
-        :param oX: The offset added to the x-coordinate.
-        :param oY: The offset added to the y-coordinate.
-        :param click_kwargs: Additional keyword arguments for pyautogui.click().
+        Performs a mouse click on the region.
         """
         Point(
-            self.cx + oX if center else self.x + oX,
-            self.cy + oY if center else self.y + oY,
+            self.cx + o_x if center else self.x + o_x,
+            self.cy + o_y if center else self.y + o_y,
         ).click(**click_kwargs)
 
-    def moveIn(self, center: bool = True, oX: int = 0, oY: int = 0, **move_kwargs) -> None:
+    def move_in(self, center: bool = True, o_x: int = 0, o_y: int = 0, **move_kwargs) -> None:
         """
-        Moves the mouse cursor in the Region.
-        :param center: If True, moves to the center of the box; otherwise moves to the top-left corner.
-        :param oX: The offset added to the x-coordinate.
-        :param oY: The offset added to the y-coordinate.
-        :param move_kwargs: Additional keyword arguments for pyautogui.moveIn().
+        Moves the mouse cursor in the region.
         """
-
-        move_x = self.cx + oX if center else self.x + oX
-        move_y = self.cy + oY if center else self.y + oY
+        move_x = self.cx + o_x if center else self.x + o_x
+        move_y = self.cy + o_y if center else self.y + o_y
         pg.moveTo(move_x, move_y, **move_kwargs)
 
-    def dragTo(self, to: Point, center: bool = True, oX: int = 0, oY: int = 0, **drag_kwargs) -> None:
+    def drag_to(self, to: Point, center: bool = True, o_x: int = 0, o_y: int = 0, **drag_kwargs) -> None:
         """
-        Drags from the current Region and drops to a target x, y.
-
-        :param to: Point where the drag and drop will be performed.
-        :param center: If True, starts from the center of the current region; otherwise starts from the top-left corner.
-        :param oX: The offset added to the start x-coordinate.
-        :param oY: The offset added to the start y-coordinate.
-        :param drag_kwargs: Additional keyword arguments for pyautogui.dragTo().
+        Drags from the current region and drops to a target point.
         """
-        (Point(self.cx, self.cy)
-         if center else
-         Point(self.x, self.y)).moveIn(oX, oY)
+        (Point(self.cx, self.cy) if center else Point(self.x, self.y)).move_in(o_x, o_y)
         pg.dragTo(to.x, to.y, **drag_kwargs)
 
-    def dragRel(self, relX: int, relY: int, center: bool = True, oX: int = 0, oY: int = 0, **drag_kwargs) -> None:
+    def drag_rel(
+            self,
+            rel_x: int,
+            rel_y: int,
+            center: bool = True,
+            o_x: int = 0,
+            o_y: int = 0,
+            **drag_kwargs
+    ) -> None:
         """
         Drags from the current region to a relative position.
-
-        :param relX: The relative x-coordinate to drag to.
-        :param relY: The relative y-coordinate to drag to.
-        :param center: If True, starts from the center of the region; otherwise starts from the top-left corner.
-        :param oX: The offset added to the start x-coordinate.
-        :param oY: The offset added to the start y-coordinate.
-        :param drag_kwargs: Additional keyword arguments for pyautogui.dragRel().
         """
-        (Point(self.cx, self.cy)
-         if center else
-         Point(self.x, self.y)).moveIn(oX, oY)
-        pg.dragRel(relX, relY, **drag_kwargs)
+        (Point(self.cx, self.cy) if center else Point(self.x, self.y)).move_in(o_x, o_y)
+        pg.dragRel(rel_x, rel_y, **drag_kwargs)
 
     @staticmethod
-    def removeProximity(regions: list['Region', ...] | tuple['Region', ...],
-                        proximity_threshold_px: int = 10) -> list['Region']:
+    def remove_proximity(regions: Iterable['Region'], proximity_threshold_px: int = 10) -> list['Region']:
         """
         Filters out regions that are within a certain proximity threshold.
-
-        :param regions: List of Region objects to filter.
-        :param proximity_threshold_px: Pixel threshold for determining proximity.
-        :return: List of filtered Region objects.
         """
         result = []
         for region in regions:
-            if not any(abs(region.x - b.x) <= proximity_threshold_px
-                       and
-                       abs(region.y - b.y) <= proximity_threshold_px
-                       for b in result):
+            if not any(
+                    abs(region.x - saved_region.x) <= proximity_threshold_px
+                    and abs(region.y - saved_region.y) <= proximity_threshold_px
+                    for saved_region in result
+            ):
                 result.append(region)
         return result
 
-    def waitImage(
+    def wait_image(
             self,
-            paths: str | tuple[str, ...] | list[str, ...],
+            paths: str | tuple[str, ...] | list[str],
             timeout: int | float = 10,
             confidence: float = 0.9,
             error_dialog: bool = False,
             check_interval: int | float = 0.1
-    ) -> Union['Region', None]:
+    ) -> 'Region' | None:
         """
-        Waits for a specified image or images to appear in the region within a timeout.
-
-        :param paths: Path or list/tuple of paths to the image(s) to be searched.
-        :param timeout: Time in seconds to wait for the image(s).
-        :param confidence: The confidence with which to match the image(s).
-        :param error_dialog: If True, shows an error dialog if the image is not found.
-        :param check_interval: Interval in seconds between checks.
-        :return: Region if image is found, None otherwise.
+        Waits for a specified image or images to appear in the region.
         """
-        if isinstance(paths, str):
-            paths = [paths]
-
+        image_paths = self._normalize_paths(paths)
         end_time = time() + timeout
-        while time() < end_time:
-            for path in paths:
+        first_check = True
+        while first_check or time() < end_time:
+            first_check = False
+            for path in image_paths:
                 try:
-                    box = pg.locateOnScreen(path, confidence=confidence, region=self.toTuple())
+                    box = pg.locateOnScreen(path, confidence=confidence, region=self.to_tuple())
                     if box is not None:
-                        return Region(box.left, box.top, box.w, box.h)
+                        return self._box_to_region(box)
                 except pg.ImageNotFoundException:
                     pass
+
             if timeout == 0:
                 return None
             sleep(check_interval)
-        # TODO: Исправить отображение paths в этой ошибке
-        if error_dialog and not Notify.continueOrStop(f'{paths[0]}'):
-            raise pg.ImageNotFoundException
 
+        if error_dialog and not Notify.continue_or_stop(f'Images not found: {", ".join(image_paths)}'):
+            raise pg.ImageNotFoundException
         return None
 
-    def waitImages(
+    def wait_images(
             self,
-            paths: str | tuple[str, ...] | list[str, ...],
+            paths: str | tuple[str, ...] | list[str],
             timeout: int | float = 10,
             confidence: float = 0.9,
             error_dialog: bool = False,
@@ -402,139 +357,233 @@ class Region:
             min_matches: int = 1
     ) -> list['Region']:
         """
-        Waits for multiple images to appear in the region within a specified timeout.
-
-        :param paths: Path or list/tuple of paths to the images to be searched.
-        :param timeout: Time in seconds to wait for the images.
-        :param confidence: The confidence with which to match the images.
-        :param error_dialog: If True, shows an error dialog if the images are not found.
-        :param check_interval: Interval in seconds between checks.
-        :param proximity_threshold_px: Pixel distance to consider images as distinct.
-        :param min_matches: Minimum number of matches.
-        :return: List of Points or Boxes if images are found, False otherwise.
+        Waits for multiple images to appear in the region.
         """
-        if isinstance(paths, str):
-            paths = [paths]
-
+        image_paths = self._normalize_paths(paths)
         end_time = time() + timeout
-        boxes = None
-        while time() < end_time:
-            for path in paths:
+        boxes = []
+        first_check = True
+        while first_check or time() < end_time:
+            first_check = False
+            for path in image_paths:
                 try:
-                    boxes = pg.locateAllOnScreen(path, confidence=confidence, region=self.toTuple())
-                    boxes = [Region(b.left, b.top, b.w, b.h) for b in boxes]
+                    boxes = [
+                        self._box_to_region(box)
+                        for box in pg.locateAllOnScreen(path, confidence=confidence, region=self.to_tuple())
+                    ]
+                    boxes = self.remove_proximity(boxes, proximity_threshold_px)
+                    if min_matches and len(boxes) >= min_matches:
+                        return boxes
                     if boxes:
-                        boxes = self.removeProximity(boxes, proximity_threshold_px)
-                        if len(boxes) >= min_matches != 0:
-                            return boxes
                         continue
                 except pg.ImageNotFoundException:
                     pass
 
+            if timeout == 0:
+                break
             sleep(check_interval)
 
         if boxes and min_matches == 0:
             return boxes
-
-        # TODO: Исправить отображение paths в этой ошибке
-        if error_dialog and not Notify.continueOrStop(f'{paths[0]}'):
+        if error_dialog and not Notify.continue_or_stop(f'Images not found: {", ".join(image_paths)}'):
             raise pg.ImageNotFoundException
         return []
 
-    def waitColor(self, color, timeout=10, confidence=0.9, error_dialog=False, check_interval=0.1):
-        if isinstance(color, str):
-            color = hex_to_rgb(color)
-        elif isinstance(color, tuple):
-            pass
-        else:
-            raise TypeError(f'{color} color is not a tuple(r,g,b) or string(#rrggbb)')
-
-        start_time = time()
-        while True:
-            screenshot = ImageGrab.grab(bbox=(self.x, self.y, self.x + self.w, self.y + self.h))
-            image = np.array(screenshot)
-            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
-            # Check for color in the image
-            found, point = self.check_color(image, color, confidence)
-
-            if found:
-                # Adjust the point taking into account the region
-                corrected_point = (point.x + self.x, point.y + self.y)
-                return Point(*corrected_point)
-
-            if time() - start_time > timeout:
-                if error_dialog:
-                    print("Color not found")
-                return None
-
-            sleep(check_interval)
-
-    @staticmethod
-    def check_color(image, color, confidence):
-        # Преобразование цвета в формат BGR
-        bgr_color = color[::-1]
-
-        # Рассчитываем границы для заданного диапазона цветов с учетом confidence
-        lower_bound = np.array([max(0, c - (255 - c) * (1 - confidence)) for c in bgr_color])
-        upper_bound = np.array([min(255, c + (255 - c) * (1 - confidence)) for c in bgr_color])
-        mask = cv2.inRange(image, lower_bound, upper_bound)
-
-        # Находим координаты точки
-        points = np.where(mask == 255)
-        if len(points[0]) > 0:
-            y, x = points[0][0], points[1][0]
-            return True, Point(x, y)
-
-        return False, None
-        # def waitColor(
-
-    def waitColors(
+    def wait_color(
             self,
-            color: str | tuple[str, ...],
-            timeout: int = 10000,
+            color: str | tuple[int, int, int] | list[int],
+            timeout: int | float = 10,
             confidence: float = 0.9,
             error_dialog: bool = False,
-            check_interval: int = 100,
+            check_interval: int | float = 0.1
+    ) -> Point | None:
+        """
+        Waits for a specified color to appear in the region.
+        """
+        rgb_color = parse_color(color)
+        end_time = time() + timeout
+        first_check = True
+        while first_check or time() < end_time:
+            first_check = False
+            found, point = self.check_color(self._screenshot_array(), rgb_color, confidence)
+            if found:
+                return Point(point.x + self.x, point.y + self.y)
+
+            if timeout == 0:
+                break
+            sleep(check_interval)
+
+        if error_dialog and not Notify.continue_or_stop(f'Color not found: {rgb_color}'):
+            raise TimeoutError(f'Color not found: {rgb_color}')
+        return None
+
+    def wait_colors(
+            self,
+            color: str
+                   | tuple[int, int, int]
+                   | list[int]
+                   | tuple[str | tuple[int, int, int], ...]
+                   | list[str | tuple[int, int, int]],
+            timeout: int | float = 10,
+            confidence: float = 0.9,
+            error_dialog: bool = False,
+            check_interval: int | float = 0.1,
             proximity_threshold_px: int = 2,
             min_matches: int = 0
     ) -> list[Point] | None:
         """
-        Waits for multiple colors to appear in the region within a specified timeout.
+        Waits for colors to appear in the region.
 
-        :param color: Color or list of colors to be searched.
-        :param timeout: Time in milliseconds to wait for the colors.
-        :param confidence: The confidence with which to match the colors.
-        :param error_dialog: If True, shows an error dialog if the colors are not found.
-        :param check_interval: Interval in milliseconds between checks.
-        :param proximity_threshold_px: Pixel distance to consider colors as distinct.
-        :param min_matches: Minimum number of matches. If 0 then all matches will be returned.
-        :return: List of Points where the colors are found, or None if not found.
+        If min_matches is 0, returns all matches from the first screenshot with matches.
         """
-        if isinstance(color, str):
-            if color.startswith('#'):
-                color = hex_to_rgb(color)
-            else:
-                color = [color]
-        elif isinstance(color, tuple):
-            color = [hex_to_rgb(c) if isinstance(c, str) and c.startswith('#') else c for c in color]
+        colors = self._normalize_colors(color)
+        end_time = time() + timeout
+        first_check = True
+        while first_check or time() < end_time:
+            first_check = False
+            matches = self._find_colors(self._screenshot_array(), colors, confidence)
+            matches = [Point(point.x + self.x, point.y + self.y) for point in matches]
+            matches = Point.remove_proximity(matches, proximity_threshold_px)
+            if min_matches and len(matches) >= min_matches:
+                return matches
+            if matches and min_matches == 0:
+                return matches
 
-        end_time = time() + (timeout / 1000)
-        matches = []
-        region = self.toTuple()
-        while time() < end_time:
-            for x in range(region[0], region[2]):
-                for y in range(region[1], region[3]):
-                    for c in color:
-                        if pixelMatchesColor(x, y, c, tolerance=int(255 * (1 - confidence))):
-                            matches.append(Point(x, y))
-                            if len(matches) >= min_matches != 0:
-                                return Point.removeProximity(matches, proximity_threshold_px)
-                            break
-            sleep(check_interval / 1000)
+            if timeout == 0:
+                break
+            sleep(check_interval)
 
-        if matches and min_matches == 0:
-            return Point.removeProximity(matches, proximity_threshold_px)
         if error_dialog:
-            Notify.continueOrStop(f'Colors {color[0]} not found')
+            Notify.continue_or_stop(f'Colors not found: {colors}')
         return None
+
+    @staticmethod
+    def _preprocess_image(image, contrast: int | float = 0, resize: int | float = 0, sharpen: bool = True):
+        scale = float(resize) if resize else 1.0
+        if scale <= 0:
+            raise ValueError('resize must be greater than 0')
+        if resize:
+            image = image.resize([int(scale * size) for size in image.size], Image.LANCZOS)
+        if contrast:
+            image = ImageEnhance.Contrast(image).enhance(contrast)
+        if sharpen:
+            image = image.filter(ImageFilter.SHARPEN)
+        return image, scale
+
+    @staticmethod
+    def _read_confidence(value) -> float:
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return -1
+
+    @staticmethod
+    def _normalize_text(value: str, case_sensitive: bool) -> str:
+        value = value.strip()
+        return value if case_sensitive else value.lower()
+
+    @staticmethod
+    def _data_value(data, name: str, index: int):
+        if name in data:
+            return data[name][index]
+        legacy_name = {'width': 'w', 'height': 'h'}.get(name)
+        if legacy_name in data:
+            return data[legacy_name][index]
+        raise KeyError(name)
+
+    @staticmethod
+    def _line_key(data, index: int) -> tuple:
+        def value(name, fallback):
+            values = data.get(name)
+            if values is None:
+                return fallback
+            return values[index]
+
+        return (
+            value('block_num', 0),
+            value('par_num', 0),
+            value('line_num', index),
+        )
+
+    @staticmethod
+    def _bbox_region(region: 'Region', items: list[dict], scale: float) -> 'Region':
+        left = min(item['left'] for item in items) / scale
+        top = min(item['top'] for item in items) / scale
+        right = max(item['left'] + item['width'] for item in items) / scale
+        bottom = max(item['top'] + item['height'] for item in items) / scale
+        return Region(
+            int(round(region.x + left)),
+            int(round(region.y + top)),
+            int(round(right - left)),
+            int(round(bottom - top)),
+        )
+
+    @staticmethod
+    def _box_to_region(box) -> 'Region':
+        width = getattr(box, 'width', getattr(box, 'w', None))
+        height = getattr(box, 'height', getattr(box, 'h', None))
+        return Region(box.left, box.top, width, height)
+
+    @staticmethod
+    def _normalize_paths(paths: str | tuple[str, ...] | list[str]) -> list[str]:
+        image_paths = [paths] if isinstance(paths, str) else list(paths)
+        if not image_paths:
+            raise ValueError('At least one image path must be provided.')
+        return image_paths
+
+    @staticmethod
+    def _color_bounds(color: tuple[int, int, int], confidence: float) -> tuple[np.ndarray, np.ndarray]:
+        if confidence < 0 or confidence > 1:
+            raise ValueError('confidence must be between 0 and 1')
+        tolerance = int(round(255 * (1 - confidence)))
+        color_array = np.array(color, dtype=np.int16)
+        lower_bound = np.clip(color_array - tolerance, 0, 255).astype(np.uint8)
+        upper_bound = np.clip(color_array + tolerance, 0, 255).astype(np.uint8)
+        return lower_bound, upper_bound
+
+    def _screenshot_array(self) -> np.ndarray:
+        screenshot = ImageGrab.grab(bbox=(self.x, self.y, self.x + self.w, self.y + self.h))
+        return np.array(screenshot.convert('RGB'))
+
+    @classmethod
+    def check_color(cls, image: np.ndarray, color: tuple[int, int, int], confidence: float):
+        lower_bound, upper_bound = cls._color_bounds(color, confidence)
+        mask = np.all((image >= lower_bound) & (image <= upper_bound), axis=2)
+        points = np.argwhere(mask)
+        if len(points) > 0:
+            y, x = points[0]
+            return True, Point(int(x), int(y))
+        return False, None
+
+    @staticmethod
+    def _normalize_colors(
+            color: str
+                   | tuple[int, int, int]
+                   | list[int]
+                   | tuple[str | tuple[int, int, int], ...]
+                   | list[str | tuple[int, int, int]]
+    ) -> list[tuple[int, int, int]]:
+        if isinstance(color, str):
+            return [parse_color(color)]
+        if (
+                isinstance(color, (tuple, list))
+                and len(color) == 3
+                and all(isinstance(channel, int) for channel in color)
+        ):
+            return [parse_color(color)]
+        return [parse_color(item) for item in color]
+
+    @classmethod
+    def _find_colors(
+            cls,
+            image: np.ndarray,
+            colors: list[tuple[int, int, int]],
+            confidence: float
+    ) -> list[Point]:
+        result = []
+        for color in colors:
+            lower_bound, upper_bound = cls._color_bounds(color, confidence)
+            mask = np.all((image >= lower_bound) & (image <= upper_bound), axis=2)
+            for y, x in np.argwhere(mask):
+                result.append(Point(int(x), int(y)))
+        return result

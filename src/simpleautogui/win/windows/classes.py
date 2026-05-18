@@ -2,7 +2,7 @@ import win32api
 import win32con
 import win32gui
 
-from simpleautogui import Region
+from simpleautogui.screen.classes.base import Region
 from simpleautogui.win.windows.exceptions.base import (
     DisplayMonitorEnumerationError, IncorrectWindowInitialization,
     WindowByTitleNotFound, WindowSuchHwndDoesNotExist
@@ -22,16 +22,18 @@ class Window:
         """
         self.hwnd = None
 
-        if hwnd:
+        if hwnd is not None:
             self.hwnd = hwnd
             if not self.exists():
                 raise WindowSuchHwndDoesNotExist(f'A window with this hwnd({self.hwnd}) does not exist.')
         elif title:
-            hwnds = self.byTitle(title)
-            if hwnds:
-                self.hwnd = hwnds[index]
-            else:
+            windows = self.by_title(title)
+            if not windows:
                 raise WindowByTitleNotFound(f'Window with title \'{title}\' not found.')
+            try:
+                self.hwnd = windows[index].hwnd
+            except IndexError:
+                raise WindowByTitleNotFound(f'Window with title \'{title}\' and index {index} not found.')
         else:
             raise IncorrectWindowInitialization('hwnd= or title= parameter must be provided for Window initialization.')
 
@@ -79,13 +81,13 @@ class Window:
         :param hwnd: The handle of the window to check.
         :return: True if the window exists, False otherwise.
         """
-        return win32gui.IsWindow(hwnd or self.hwnd)
+        return win32gui.IsWindow(hwnd if hwnd is not None else self.hwnd)
 
-    def isVisible(self) -> bool:
+    def is_visible(self) -> bool:
         return win32gui.IsWindowVisible(self.hwnd)
 
     @classmethod
-    def byTitle(cls, title, case_sensitive: bool = False) -> list['Window']:
+    def by_title(cls, title, case_sensitive: bool = False) -> list['Window']:
         """
         Finds windows by a partial match of their title and returns a list of Window objects.
         The search can be case-sensitive or insensitive.
@@ -108,7 +110,7 @@ class Window:
         win32gui.EnumWindows(callback, hwnd_list_)
         return [cls(hwnd=hwnd) for hwnd in hwnd_list_]
 
-    def setGeometry(self, x=None, y=None, w=None, h=None, safe: bool = True):
+    def set_geometry(self, x=None, y=None, w=None, h=None, safe: bool = True):
         """
         Changes the size and position of the window.
         If any arguments are not provided, those dimensions are not changed.
@@ -119,7 +121,8 @@ class Window:
         :param h: The h of the window.
         :param safe: if True raising before change geometry.
         """
-        if safe: self.raiseIt()
+        if safe:
+            self.raise_it()
 
         rect = win32gui.GetWindowRect(self.hwnd)
         x = x if x is not None else rect[0]
@@ -128,7 +131,7 @@ class Window:
         h = h if h is not None else rect[3] - rect[1]
         win32gui.MoveWindow(self.hwnd, x, y, w, h, True)
 
-    def raiseIt(self):
+    def raise_it(self):
         """
         Brings the window to the front, attempting multiple times if necessary.
         """
@@ -157,7 +160,7 @@ class Window:
         :param safe: if True raising before restoring.
         """
         if safe:
-            self.raiseIt()
+            self.raise_it()
         win32gui.ShowWindow(self.hwnd, win32con.SW_RESTORE)
 
     def close(self):
@@ -181,8 +184,8 @@ class Monitor:
         try:
             for hMonitor, hdcMonitor, pyRect in win32api.EnumDisplayMonitors():
                 monitors_info.append(win32api.GetMonitorInfo(hMonitor))
-        except Exception:
-            raise DisplayMonitorEnumerationError()
+        except Exception as e:
+            raise DisplayMonitorEnumerationError() from e
 
         monitors = []
         for index, monitor_info in enumerate(monitors_info):
@@ -195,25 +198,32 @@ class Monitor:
             monitors.append(
                 cls(
                     name=name,
-                    fregion=Region(monitor_rect[0], monitor_rect[1], monitor_rect[2], monitor_rect[3]),
-                    wregion=Region(work_rect[0], work_rect[1], work_rect[2], work_rect[3]),
+                    fregion=cls._rect_to_region(monitor_rect),
+                    wregion=cls._rect_to_region(work_rect),
                     flags=flags,
                     device=device
                 )
             )
         return monitors
 
+    @staticmethod
+    def _rect_to_region(rect) -> Region:
+        left, top, right, bottom = rect
+        return Region(left, top, right - left, bottom - top)
+
 
 class WindowsGrid:
     def __init__(self,
                  windows: tuple[Window, ...] | list[Window, ...],
                  rows: int, cols: int,
-                 region: Region = Region()
+                 region: Region = None
                  ):
+        if rows <= 0 or cols <= 0:
+            raise ValueError('rows and cols must be greater than 0.')
         self.windows = list(windows)
         self.rows = rows
         self.cols = cols
-        self.region = region
+        self.region = region or Region()
 
     def __str__(self):
         return 'WindowsGrid(\n    ' + ',\n    '.join(f'{window.title}' for window in self.windows) + '\n)'
@@ -225,6 +235,7 @@ class WindowsGrid:
         """
         Appends a window to the list of windows and arranges them.
         """
+        self._check_capacity(1)
         self.windows.append(window)
         self.arrange()
 
@@ -232,6 +243,7 @@ class WindowsGrid:
         """
         Prepends a window to the list of windows and arranges them.
         """
+        self._check_capacity(1)
         self.windows.insert(0, window)
         self.arrange()
 
@@ -242,22 +254,28 @@ class WindowsGrid:
         :param index: The index at which to insert the window.
         :param window: The window to insert.
         """
+        self._check_capacity(1)
         self.windows.insert(index, window)
         self.arrange()
 
     def arrange(self):
-        for index, window in enumerate(self.windows):
-            region_w = self.region.w - self.region.x
-            region_h = self.region.h - self.region.y
+        self._check_capacity()
 
+        region_w = self.region.w
+        region_h = self.region.h
+        for index, window in enumerate(self.windows):
             window.restore()
 
             col = index % self.cols
-            row = (index // self.cols) % self.rows
+            row = index // self.cols
 
             x = self.region.x + col * region_w // self.cols
             y = self.region.y + row * region_h // self.rows
             w = region_w // self.cols + (region_w % self.cols > col)
             h = region_h // self.rows + (region_h % self.rows > row)
 
-            window.setGeometry(x, y, w, h)
+            window.set_geometry(x, y, w, h)
+
+    def _check_capacity(self, additional_windows: int = 0):
+        if len(self.windows) + additional_windows > self.rows * self.cols:
+            raise ValueError('Windows count is greater than grid capacity.')

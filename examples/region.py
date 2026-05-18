@@ -8,7 +8,7 @@ r = Region(100, 200, 300, 400)
 # r.click(center=False) u can.
 
 # Move the mouse to region center.
-# r.moveIn()
+# r.move_in()
 # center=False u can.
 
 # Show this region (save screenshot like .png in local/temp and open it).
@@ -37,25 +37,25 @@ taskbar = Region()
 # taskbar.show()
 # print(f'Taskbar text: {taskbar.text(resize=3)}')
 
-# result: list[Region] = taskbar.findText('Window')
+# result: list[Region] = taskbar.find_text('Window')
 # if result:
 #     print(result[0])
-#     result[0].moveIn()
+#     result[0].move_in()
 # else:
 #     print('Not found... Let\'s try to increase the size and increase the contrast')
 
 # More arguments
-result: list[Region] = taskbar.findText(
+result: list[Region] = taskbar.find_text(
     text='Window',
     lang='eng+rus',
     contrast=0,
     resize=0,
     sharpen=True,
-    sensitive=False,
+    case_sensitive=False,
     min_confidence=80
 )
 if result:
     print(result[0])
-    result[0].moveIn(center=True)
+    result[0].move_in(center=True)
 else:
     print('Not found... Try another image.')

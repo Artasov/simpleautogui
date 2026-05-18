@@ -1,6 +1,6 @@
 [project]
 name = "simpleautogui"
-version = "0.0.6"
+dynamic = ["version"]
 authors = [
     { name = "artasov", email = "ivanhvalevskey@gmail.com" }
 ]
@@ -21,8 +21,21 @@ dependencies = [
     "mouse >= 0.7.1",
     "webcolors >= 1.13",
     "keyboard >= 0.13.5",
-    "pydub >= 0.25.1",
     "pillow >= 10.3.0",
+    "numpy >= 1.26.4",
+    "PyMsgBox >= 1.0.9",
+    "PyScreeze >= 0.1.30",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest >= 8.0.0",
+]
+dev = [
+    "build >= 1.2.2",
+    "pytest >= 8.0.0",
+    "ruff >= 0.11.0",
+    "twine >= 6.1.0",
 ]
 
 [project.urls]
@@ -32,3 +45,28 @@ Issues = "https://github.com/Artasov/simpleautogui/issues"
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.dynamic]
+version = { attr = "simpleautogui._version.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/simpleautogui/__init__.py" = ["F401"]
+"src/simpleautogui/screen/__init__.py" = ["F401"]
+"src/simpleautogui/screen/classes/__init__.py" = ["F401"]
+"src/simpleautogui/win/windows/__init__.py" = ["F401"]

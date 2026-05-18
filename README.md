@@ -1,319 +1,448 @@
-# Introduction to `simpleautogui`
+<div align="center">
+  <h1>simpleautogui</h1>
+</div>
 
-`simpleautogui` is a Python library designed to automate
-interaction with graphical user interfaces on Windows operating
-systems through scripting. Leveraging the power of several
-underlying libraries, it provides a set of tools to simulate
-human interaction with the computer in a straightforward and
-efficient manner.
+<div align="center">
+  <a href="./README.md">
+    <img src="https://img.shields.io/badge/English-blue?style=for-the-badge" alt="English">
+  </a>
+  <a href="./README.ru.md">
+    <img src="https://img.shields.io/badge/Русский-red?style=for-the-badge" alt="Русский">
+  </a>
+</div>
 
-## Dependencies
-`simpleautogui` relies on the following dependencies:
+### Small Windows automation toolkit for screen, mouse, OCR, image matching, colors, windows, and shell commands
 
-* Python 3.11 or higher
-* PyAutoGUI
-* OpenCV-Python
-* PyWin32
-* PyTesseract
-* Mouse
-* Webcolors
-* Keyboard
+`simpleautogui` is a Python library for pragmatic Windows GUI automation.
+It wraps common low-level tools like PyAutoGUI, PyWin32, Pillow, OpenCV-compatible image search, and Tesseract OCR behind a small object-oriented API.
 
-## Quick Start
+The library is useful when a workflow is easier to automate through the real desktop than through an official API:
+click a known screen point, wait for an image, read text from a region, find a color, move windows, or run a Windows command.
 
-To get started with **simpleautogui**, install the package using pip:
+## Navigation
 
-```sh
+- [Installation](#installation)
+- [Core concepts](#core-concepts)
+- [Point](#point)
+- [Region](#region)
+- [OCR](#ocr)
+- [Image matching](#image-matching)
+- [Color matching](#color-matching)
+- [Hotkey macros](#hotkey-macros)
+- [Windows](#windows)
+- [Window grids](#window-grids)
+- [Monitors](#monitors)
+- [Console commands](#console-commands)
+- [Development](#development)
+
+## Installation
+
+```bash
 pip install simpleautogui
 ```
 
-## Classes
-  * ### Point
-    The `Point` class represents a specific location on the screen.
-    It provides methods to perform actions like clicking or moving
-    the mouse to its coordinates.
-    ```python
-    from simpleautogui import Point
-    
-    # Create a points with x and y coordinates
-    p = Point(100, 100)
-    p2 = Point(500, 500)
-    # You can initialize Point using 0 or just 1 argument, 
-    # any missing arguments will be set to the current cursor position.
-    
-    # Convert to tuple
-    p.toTuple()
-    # (100, 100)
+Requirements:
 
-    # Click at first point
-    p.click()
-    # Move the mouse to 'p' point
-    p.moveIn()
-    # Drag and drop 'p' to 'p2'.
-    p.dragTo(p2)
-    # Drag and drop by offset
-    p.dragRel(400, 400)
-    ```
-    Let me remind you that these are wrapper functions around **pyautogui** functions.
-    Read more about arguments in the **pyautogui** documentation.
+- Python 3.11+
+- Windows
+- Tesseract OCR installed separately if you use OCR methods
 
-    ```python
-    from simpleautogui import Point
-    
-    Point(100, 100).click(
-        oX=0, # Y offset
-        oY=0, # X offset
-        clicks=2, # double click
-        interval=0.0, # interval between clicks in seconds
-        button='right', # 'left', 'middle'
-        logScreenshot=True, # screenshot logging
-    )
-    
-    Point(100, 100).moveIn(
-        oX=0,
-        oY=0,
-        # **move_kwargs
-        duration=0.0,
-        logScreenshot=False,
-    )
-    # dragTo, dragRel same
-    ```
+For development:
 
-* ### Region
-   The `Region` class represents a rectangular area on the screen.
-  It allows you to perform operations within this specified area,
-  like taking screenshots or searching for text.
+```bash
+pip install "simpleautogui[dev]"
+```
 
-   ```python
-   from simpleautogui import Region
-   
-   # Define a region starting at x=100, y=200 with w=300 and h=400.
-   region = Region(100, 200, 300, 400)
-   # or
-   fullscreen = Region()
-   
-   # Convert to tuple
-   Region().toTuple()
-   # (0, 0, 1920, 1080)
-   
-   # Click to the center at this region.
-   region.click()
-   # r.click(center=False) u can.
-   
-   # Move the mouse to region center.
-   region.moveIn()
-   # center=False u can.
-   # and u can use oX= and oY= offsets.
-   
-   # Show this region (save screenshot like .png in local/temp and open it).
-   region.show()
-   
-   # Recognizes and returns the text in the specified area of the screen.
-   # We find the Tesseract-OCR path in the path variable to tesseract.exe.
-   # Example with default arguments:
-   region.text(
-       lang = 'eng+rus',  # Language(s) for OCR, separated by a plus sign (e.g., 'eng+rus').
-       contrast = 0,  # Level of contrast enhancement to apply to the image. 0 means no enhancement.
-       resize = 0,  # Scaling factor to apply to the image. 0 means no scaling.
-       sharpen = True,  # Whether to apply a sharpening filter to the image.
-       # **image_to_string_kwargs Additional keyword arguments for pytesseract.image_to_string.
-   )
-   # Use something like this:
-   if 'some text' in region.text():
-       pass
-   
-   # Search for text throughout the entire screen.
-   # Return the list of Region objects containing the text.
-   result = Region().findText('example')
-   # With args...
-   result: list[Region] = Region().findText(
-       text='example',
-       lang='eng+rus',
-       contrast=0,
-       resize=0,
-       sharpen=True,
-       case_sensitive=False,
-       # and other **image_to_data_kwargs
-   )
-   
-   # Filter matching regions with 10px precision
-   unique_regions: list[Region] = Region.removeProximity(
-      regions=(Region(), Region(), Region(), ...),
-      proximity_threshold_px=10
-   )
-   ```
-   ### More specific functions are listed in the section<br>[Special Features](#Special-Features).
+## Core concepts
 
-* ### Window
-   `Window` is an abstraction of a window in the Windows operating system.
-    It provides a convenient interface for working with windows, including getting
-    information about the window title, its size and position, as well as control
-    its visibility, geometry and other attributes.
-    ```python
-    from pprint import pprint
-    from pyautogui import size
-    from simpleautogui import Window
-    
-    # Get all visible windows.
-    all_windows = Window.all()
-    pprint(all_windows)
-    
-    # Getting a window by name (only one)  
-    window = Window(title='adobe') 
-    # If there are several windows, then you can select the index of the resulting window.
-    window = Window(title='adobe', index=0) 
-    # Or by hwnd
-    window = Window(hwnd=...) 
-    
-    # Retrieving windows whose names contain the string 'adobe'.
-    adobe_windows: list[Window] = Window.byTitle('adobe')
-    
-    for window in adobe_windows:
-        if window.exists() and window.isVisible():
-            print(window.title)
-            
-            # Brings the window to the front.
-            window.raiseIt()
-    
-            # Changes the size and position of the window.
-            window.setGeometry(x=0)
-            window.setGeometry(x=0, y=0, w=500, h=500)
-    
-            # U can get the window region.
-            window.region.dragTo(
-                endX=1500,
-                endY=size().height // 2,
-                oX=window.region.w // 2, oY=15,
-                center=False,
-                duration=2
+The public API is intentionally small:
+
+- `Point` represents one screen coordinate.
+- `Region` represents a rectangular screen area.
+- `Window` wraps a native Windows window handle.
+- `WindowsGrid` arranges several windows inside a region.
+- `Monitor` describes available displays.
+- `Macro` and `MacroRunner` run reusable automation scripts by hotkeys.
+- `cmd` and `powershell` run Windows shell commands.
+
+```python
+from simpleautogui import Macro, MacroRunner, Point, Region, Window, WindowsGrid, Monitor, cmd, powershell
+```
+
+Coordinates follow the usual screen convention: `x` grows left to right, `y` grows top to bottom.
+`Region(x, y, w, h)` stores width and height, not right/bottom coordinates.
+
+## Point
+
+Use `Point` when you already know the coordinate you want to click, move to, or drag from.
+
+```python
+from simpleautogui import Point
+
+start = Point(100, 100)
+target = Point(500, 500)
+
+start.click()
+start.move_in(duration=0.2)
+start.drag_to(target, duration=0.5)
+start.drag_rel(200, 0, duration=0.3)
+
+print(start.to_tuple())  # (100, 100)
+```
+
+If `x` or `y` is omitted, the missing coordinate is taken from the current cursor position.
+Zero is a valid coordinate:
+
+```python
+Point(0, 100)
+Point(100, 0)
+Point(None, 100)
+```
+
+Read the pixel color under a point:
+
+```python
+color = Point(100, 100).color
+print(color)  # (r, g, b)
+```
+
+Wait for a mouse or keyboard input and return the cursor position:
+
+```python
+point = Point.input(button="right", timeout=10)
+print(point)
+```
+
+## Region
+
+Use `Region` when an action belongs to a rectangular screen area.
+
+```python
+from simpleautogui import Region
+
+region = Region(100, 200, 300, 400)
+fullscreen = Region()
+
+region.click()
+region.click(center=False)
+region.move_in(o_x=10, o_y=5)
+region.show()
+
+print(region.to_tuple())  # (100, 200, 300, 400)
+```
+
+Drag from a region:
+
+```python
+from simpleautogui import Point, Region
+
+panel = Region(100, 100, 400, 300)
+panel.drag_to(Point(800, 300), center=True, duration=0.4)
+panel.drag_rel(200, 0, center=False, duration=0.4)
+```
+
+Filter close duplicate regions:
+
+```python
+unique_regions = Region.remove_proximity(regions, proximity_threshold_px=10)
+```
+
+## OCR
+
+OCR uses `pytesseract`. Install Tesseract OCR and make sure `tesseract.exe` is available in `PATH`, or configure `pytesseract` in your application.
+
+Read text from a region:
+
+```python
+from simpleautogui import Region
+
+text = Region(100, 100, 600, 200).text(
+    lang="eng+rus",
+    resize=2,
+    contrast=1.5,
+    sharpen=True,
+)
+
+if "Ready" in text:
+    print("Application is ready")
+```
+
+Find a word or a phrase and get matching regions:
+
+```python
+from simpleautogui import Region
+
+matches = Region().find_text(
+    text="Export complete",
+    lang="eng",
+    resize=2,
+    min_confidence=80,
+    case_sensitive=False,
+)
+
+for match in matches:
+    match.click()
+```
+
+`resize` improves OCR quality on small UI text. Returned coordinates are scaled back to the original screen coordinates.
+
+## Image matching
+
+Use image matching when the UI element is easier to identify by screenshot than by text.
+
+```python
+from simpleautogui import Region
+
+button = Region().wait_image(
+    paths="assets/export_button.png",
+    timeout=10,
+    confidence=0.9,
+    check_interval=0.1,
+)
+
+if button:
+    button.click()
+```
+
+Wait for one of several images:
+
+```python
+result = Region().wait_image(
+    paths=("assets/ok.png", "assets/continue.png"),
+    timeout=15,
+)
+```
+
+Find multiple matches:
+
+```python
+icons = Region().wait_images(
+    paths="assets/item.png",
+    timeout=10,
+    confidence=0.9,
+    proximity_threshold_px=2,
+    min_matches=1,
+)
+
+for icon in icons:
+    icon.click()
+```
+
+## Color matching
+
+Color matching is useful for simple UI state checks: active indicator, progress color, badge color, selected state.
+
+```python
+from simpleautogui import Region
+
+point = Region().wait_color("red", timeout=10, confidence=0.95)
+
+if point:
+    point.click()
+```
+
+Supported color formats:
+
+- `"#ff0000"`
+- `"#f00"`
+- `"rgb(255, 0, 0)"`
+- `"red"`
+- `(255, 0, 0)`
+
+Find several colors:
+
+```python
+points = Region(0, 0, 800, 600).wait_colors(
+    color=("#00ff00", "rgb(255, 0, 0)", "blue"),
+    timeout=10,
+    confidence=0.9,
+    check_interval=0.1,
+    proximity_threshold_px=2,
+    min_matches=0,
+)
+
+if points:
+    print(points[0])
+```
+
+`confidence=1` means exact match. Lower confidence increases the RGB tolerance.
+
+## Hotkey macros
+
+Use `Macro` when you want to start and stop an automation script from any screen with keyboard shortcuts.
+The macro itself runs in a worker thread. Stop is cooperative: the runner requests stop, and the macro exits at the next `context.check_stop()`, `context.sleep(...)`, `context.wait_image(...)`, or `context.wait_color(...)` call.
+
+```python
+from simpleautogui import Macro, MacroContext, MacroRunner, Region
+
+
+class ClickImagesMacro(Macro):
+    def run(self, context: MacroContext) -> None:
+        screen = Region()
+
+        while context.is_running:
+            button = context.wait_image(
+                region=screen,
+                paths=("assets/next.png", "assets/continue.png"),
+                timeout=1,
+                confidence=0.9,
             )
-        
-            # I will not explain these functions.    
-            window.maximize()
-            window.minimize()
-            window.restore()
-            window.close()
-    ```
-* ### WindowsGrid
-   `WindowsGrid` is a class representing a grid of windows.
-    It provides methods to append, prepend, and insert windows 
-    into the grid, as well as arrange them within the specified region.
-    ```python
-    from simpleautogui import Window, Region, WindowsGrid
-    
-    # Initialize a WindowsGrid with a list of windows, 
-    # number of rows and columns, and an optional region.
-    windows = Window.all()
-    grid = WindowsGrid(
-        windows=(windows[0], windows[1], windows[2]),    
-        rows=2, cols=2, 
-        region=Region(100, 100, 800, 600)
-    )
-    
-    # Append a new window to the grid.
-    grid.append(windows[3])
-    # Prepend a new window to the grid.
-    grid.prepend(windows[4])
-    # Insert a new window at a specific index in the grid.
-    grid.insert(index=2, window=windows[5]) 
-  
-    # Arrange the windows within the grid.
-    grid.arrange()
-    # append, prepend, insert automatically use arrange()  
-    
-    # Access to all grid windows
-    print(grid.windows)
-    ```
-* ### Monitor
-   `Monitor` is a class representing a monitor display in the Windows operating system.
-    It provides a convenient interface for obtaining information about monitors, such as
-    their name, screen regions, flags, and device information.
-    ```python
-    from simpleautogui import Monitor
-    
-    # Get information about all available monitors.
-    all_monitors = Monitor.all()
-    for monitor in all_monitors:
-        print(monitor.name)
-        print(f"Flags: {monitor.flags}")
-        print(f"Device: {monitor.device}")
-        print(f"Full region: {monitor.fregion}")
-        print(f"Work region: {monitor.wregion}")
-        print()
-    ```
-    > This class is more of an auxiliary than a full-fledged tool.
 
-Each of these classes streamline the process of screen automation by providing a set of intuitive methods to interact with the GUI elements.
+            context.check_stop()
+
+            if button:
+                button.click()
+                context.sleep(0.2)
 
 
-## Special Features
-* ## `waitImage` `waitImages`
-   `waitImage` waits for a specified image or images to appear on the screen within a timeout.
+runner = MacroRunner(
+    ClickImagesMacro(),
+    start_hotkey="ctrl+alt+s",
+    stop_hotkey="ctrl+alt+q",
+)
 
-   ```python
-   from simpleautogui import Region
+runner.listen(exit_hotkey="esc")
+```
 
-   # Waits for the image to appear and clicks on its center.
-   Region().waitImage('image.png').click()
+Typical workflow:
 
-   # Waits for one of several images to appear and clicks...
-   Region().waitImage(('image.png', 'image2.png')).click()
-   ``` 
-   ```python
-   from simpleautogui import Region
-  
-   # The same function but with all the arguments.
-   result: Region | None = Region().waitImage(
-       paths='image.png',  # Path str or list/tuple of paths to the images to be searched.
-       timeout=10,  # Time in seconds to wait for the images.
-       confidence=0.9,  # The confidence with which to match the images.
-       error_dialog=False,  # If True, shows an error dialog if the images are not found.
-       # Displays an error dialog and asks the user whether to continue exec code or stop.
-       check_interval=0.1,  # Interval in seconds between checks.
-   )
-   result.click()
-   ```
-   `waitImages` is the same thing, but can return multiple regions rather than the first matching one.
-   ```python
-   from simpleautogui import Region
+- run the Python script once;
+- press `Ctrl+Alt+S` to start the macro;
+- press `Ctrl+Alt+Q` to request stop;
+- press `Esc` to unbind hotkeys and exit the listener.
 
-   images = Region().waitImages('image.png')
-   for img in images:
-       img.click()
-   
-   # with args
-   images: list[Region] = Region().waitImages(
-       paths='image.png',
-       timeout=10, 
-       confidence=0.9, 
-       error_dialog=False,
-       check_interval=0.1,
-       proximity_threshold_px=2,  # Pixel distance to consider images as distinct.
-       min_matches=1  # Minimum number of matches.
-   )
-   ```
+You can also use one toggle shortcut:
 
-* ## `waitColor` `waitColors`
-  Waits for a specified color or colors to appear on the screen within a timeout.
-  #### NOT YET IMPLEMENTED
+```python
+runner = MacroRunner(ClickImagesMacro(), toggle_hotkey="ctrl+alt+m")
+runner.listen(exit_hotkey="esc")
+```
 
+Lifecycle hooks are optional:
 
-* ## `cmd` `powershell`
-   Allows you to run `Windows` commands using `cmd` or `powershell`, 
-   returns a string with console output or raise exception.   
-   ```python
-   from simpleautogui import cmd, powershell
-   from simpleautogui.win.console.exceptions.base import CommandExecutionError
-   
-   try:
-       output = cmd('dir')
-       print(output)
-   except CommandExecutionError as e:
-       print(e)
-   
-   try:
-       output = powershell('ls')
-       print(output)
-   except CommandExecutionError as e:
-       print(e)
-   ```
+```python
+class MyMacro(Macro):
+    def on_start(self, context: MacroContext) -> None:
+        print("started")
+
+    def run(self, context: MacroContext) -> None:
+        ...
+
+    def on_stop(self, context: MacroContext) -> None:
+        print("stopped")
+```
+
+If your macro uses long loops or long waits, prefer `context.sleep`, `context.wait_image`, `context.wait_images`, `context.wait_color`, and `context.wait_colors` over direct long blocking calls.
+That keeps hotkey stop responsive.
+
+## Windows
+
+Use `Window` to find and control native Windows windows.
+
+```python
+from simpleautogui import Window
+
+window = Window(title="Notepad")
+print(window.title)
+print(window.region)
+
+window.raise_it()
+window.set_geometry(x=0, y=0, w=900, h=700)
+window.maximize()
+window.restore()
+window.minimize()
+window.close()
+```
+
+Find all visible windows or filter by title:
+
+```python
+from simpleautogui import Window
+
+for window in Window.all():
+    print(window.title)
+
+notepads = Window.by_title("notepad", case_sensitive=False)
+```
+
+## Window grids
+
+`WindowsGrid` arranges windows inside a target region.
+
+```python
+from simpleautogui import Region, Window, WindowsGrid
+
+windows = Window.by_title("notepad")
+
+grid = WindowsGrid(
+    windows=windows[:4],
+    rows=2,
+    cols=2,
+    region=Region(0, 0, 1600, 900),
+)
+
+grid.arrange()
+```
+
+`append`, `prepend`, and `insert` update the window list and arrange the grid again:
+
+```python
+grid.append(Window(title="Calculator"))
+grid.prepend(Window(title="Explorer"))
+grid.insert(1, Window(title="Terminal"))
+```
+
+## Monitors
+
+`Monitor` exposes full and work regions for each display.
+
+```python
+from simpleautogui import Monitor
+
+for monitor in Monitor.all():
+    print(monitor.name)
+    print(monitor.fregion)  # full monitor region
+    print(monitor.wregion)  # work area without taskbar
+    print(monitor.flags)
+    print(monitor.device)
+```
+
+## Console commands
+
+Run Windows shell commands and get stdout as a string.
+
+```python
+from simpleautogui import cmd, powershell
+from simpleautogui.win.console.exceptions.base import CommandExecutionError
+
+try:
+    print(cmd("dir", timeout=10))
+    print(powershell("Get-ChildItem", timeout=10))
+except CommandExecutionError as exc:
+    print(exc)
+```
+
+For safer `cmd` calls, pass a list instead of a shell string:
+
+```python
+output = cmd(["cmd.exe", "/c", "dir"], timeout=10)
+```
+
+## Development
+
+Install development dependencies:
+
+```bash
+pip install -e ".[dev]"
+```
+
+Run checks:
+
+```bash
+python -m ruff check .
+python -m pytest -q
+python -m build
+python -m twine check dist/*
+```
+
+Release workflow is described in [RELEASE_GUIDE.md](./RELEASE_GUIDE.md).
