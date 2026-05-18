@@ -3,7 +3,6 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from enum import Enum
 from threading import Event, Lock, Thread
-from time import sleep
 from typing import Callable
 
 from simpleautogui.screen.classes.base import Point, Region
