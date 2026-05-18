@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import math
 from time import sleep, time
 from typing import Iterable
