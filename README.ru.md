@@ -28,7 +28,7 @@
 - [OCR](#ocr)
 - [Поиск изображений](#поиск-изображений)
 - [Поиск цветов](#поиск-цветов)
-- [Макросы на hotkey](#макросы-на-hotkey)
+- [Макросы и реальное применение](#макросы-и-реальное-применение)
 - [Окна](#окна)
 - [Сетки окон](#сетки-окон)
 - [Мониторы](#мониторы)
@@ -62,11 +62,11 @@ pip install "simpleautogui[dev]"
 - `Window` — обёртка над native Windows window handle.
 - `WindowsGrid` — раскладывает несколько окон внутри области.
 - `Monitor` — описывает доступные мониторы.
-- `Macro` и `MacroRunner` — запускают переиспользуемые automation scripts по hotkey.
+- `AbstractMacro` и `MacroRunner` — запускают переиспользуемые automation scripts по hotkey.
 - `cmd` и `powershell` — запускают Windows shell-команды.
 
 ```python
-from simpleautogui import Macro, MacroRunner, Point, Region, Window, WindowsGrid, Monitor, cmd, powershell
+from simpleautogui import AbstractMacro, MacroRunner, Point, Region, Window, WindowsGrid, Monitor, cmd, powershell
 ```
 
 Координаты обычные экранные: `x` растёт слева направо, `y` растёт сверху вниз.
@@ -267,16 +267,16 @@ if points:
 
 `confidence=1` означает точное совпадение. Чем ниже confidence, тем шире RGB-допуск.
 
-## Макросы на hotkey
+## Макросы и реальное применение
 
-Используй `Macro`, когда нужно запускать и останавливать automation script с любого экрана сочетанием клавиш.
+Используй `AbstractMacro`, когда нужно запускать и останавливать automation script с любого экрана сочетанием клавиш.
 Сам макрос выполняется в отдельном worker thread. Остановка кооперативная: runner просит остановиться, а макрос выходит на ближайшем `context.check_stop()`, `context.sleep(...)`, `context.wait_image(...)` или `context.wait_color(...)`.
 
 ```python
-from simpleautogui import Macro, MacroContext, MacroRunner, Region
+from simpleautogui import AbstractMacro, MacroContext, MacroRunner, Region
 
 
-class ClickImagesMacro(Macro):
+class ClickImagesMacro(AbstractMacro):
     def run(self, context: MacroContext) -> None:
         screen = Region()
 
@@ -295,13 +295,15 @@ class ClickImagesMacro(Macro):
                 context.sleep(0.2)
 
 
-runner = MacroRunner(
-    ClickImagesMacro(),
-    start_hotkey="ctrl+alt+s",
-    stop_hotkey="ctrl+alt+q",
-)
+if __name__ == "__main__":
+    runner = MacroRunner(
+        ClickImagesMacro(),
+        start_hotkey="ctrl+alt+s",
+        stop_hotkey="ctrl+alt+q",
+    )
 
-runner.listen(exit_hotkey="esc")
+    print("Ctrl+Alt+S - старт, Ctrl+Alt+Q - стоп, Esc - выход")
+    runner.listen(exit_hotkey="esc")
 ```
 
 Типичный сценарий:
@@ -321,7 +323,7 @@ runner.listen(exit_hotkey="esc")
 Lifecycle hooks необязательные:
 
 ```python
-class MyMacro(Macro):
+class MyMacro(AbstractMacro):
     def on_start(self, context: MacroContext) -> None:
         print("started")
 

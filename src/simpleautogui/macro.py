@@ -216,8 +216,8 @@ class MacroContext:
             raise ValueError(f"{name} must be greater than 0.")
 
 
-class Macro(ABC):
-    """Base class for hotkey-driven GUI automation scripts."""
+class AbstractMacro(ABC):
+    """Abstract base class for hotkey-driven GUI automation scripts."""
 
     def on_start(self, context: MacroContext) -> None:
         pass
@@ -234,11 +234,11 @@ class Macro(ABC):
 
 
 class MacroRunner:
-    """Runs a Macro in a worker thread and controls it with optional hotkeys."""
+    """Runs an AbstractMacro in a worker thread and controls it with optional hotkeys."""
 
     def __init__(
             self,
-            macro: Macro | Callable[[], Macro],
+            macro: AbstractMacro | Callable[[], AbstractMacro],
             start_hotkey: str | None = None,
             stop_hotkey: str | None = None,
             toggle_hotkey: str | None = None,
@@ -354,8 +354,8 @@ class MacroRunner:
                     self._state = MacroState.IDLE
                     self._thread = None
 
-    def _create_macro(self) -> Macro:
-        if isinstance(self.macro, Macro):
+    def _create_macro(self) -> AbstractMacro:
+        if isinstance(self.macro, AbstractMacro):
             return self.macro
         return self.macro()
 

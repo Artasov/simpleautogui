@@ -6,12 +6,12 @@ from threading import Event
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
 
 try:
-    from simpleautogui.macro import Macro, MacroContext, MacroRunner, MacroState, MacroStopped
+    from simpleautogui.macro import AbstractMacro, MacroContext, MacroRunner, MacroState, MacroStopped
 except ModuleNotFoundError as exc:
     raise unittest.SkipTest(f'Missing optional test dependency: {exc.name}')
 
 
-class CountingMacro(Macro):
+class CountingMacro(AbstractMacro):
     def __init__(self):
         self.started = False
         self.stopped = False
@@ -29,7 +29,7 @@ class CountingMacro(Macro):
         self.stopped = True
 
 
-class ErrorMacro(Macro):
+class ErrorMacro(AbstractMacro):
     def run(self, context: MacroContext) -> None:
         raise ValueError('broken')
 
